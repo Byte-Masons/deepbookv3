@@ -8,7 +8,7 @@ import { getFullnodeUrl, SuiClient } from "@mysten/sui/client";
 
 (async () => {
   // Update constant for env
-  const env = "mainnet";
+  const env = "testnet";
 
   // Initialize with balance managers if needed
   const balanceManagers = {
@@ -18,11 +18,15 @@ import { getFullnodeUrl, SuiClient } from "@mysten/sui/client";
     },
   };
 
+  const iotaTestnetUrl = "https://api.testnet.iota.cafe";
+  const clientAddress = "0x69d0ed97ad0620655ed5877f397f28d561e09b97f27f876a846b680ea97e3efc";
+
   const dbClient = new DeepBookClient({
-    address: "0x0",
+    address: clientAddress,
     env: env,
     client: new SuiClient({
-      url: getFullnodeUrl(env),
+      //url: getFullnodeUrl(env),
+      url: iotaTestnetUrl,
     }),
     balanceManagers: balanceManagers,
     adminCap: adminCapID[env],
@@ -31,11 +35,11 @@ import { getFullnodeUrl, SuiClient } from "@mysten/sui/client";
   const tx = new Transaction();
 
   dbClient.deepBookAdmin.createPoolAdmin({
-    baseCoinKey: "DRF",
+    baseCoinKey: "TYPUS",
     quoteCoinKey: "SUI",
-    tickSize: 0.000001,
-    lotSize: 1,
-    minSize: 10,
+    tickSize: 0.00001,
+    lotSize: 0.1,
+    minSize: 1,
     whitelisted: false,
     stablePool: false,
   })(tx);

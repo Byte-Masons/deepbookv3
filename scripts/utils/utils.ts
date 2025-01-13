@@ -14,13 +14,14 @@ import { fromBase64, toBase64 } from '@mysten/sui/utils';
 
 export type Network = 'mainnet' | 'testnet' | 'devnet' | 'localnet';
 
-const SUI = process.env.SUI_BINARY ?? `sui`;
+const IOTA = process.env.IOTA_BINARY ?? `iota`;
 
 export const getActiveAddress = () => {
-	return execSync(`${SUI} client active-address`, { encoding: 'utf8' }).trim();
+	return execSync(`${IOTA} client active-address`, { encoding: 'utf8' }).trim();
 };
 
 export const publishPackage = (txb: Transaction, path: string, configPath?: string) => {
+	console.log("publishPackage called")
 	const command = [
 		'move',
 		...(configPath ? ['--client.config', configPath] : []),
@@ -30,16 +31,25 @@ export const publishPackage = (txb: Transaction, path: string, configPath?: stri
 		path,
 	];
 
+	console.log(command)
+
 	const { modules, dependencies } = JSON.parse(
-		execFileSync(SUI, command, {
+		execFileSync(IOTA, command, {
 			encoding: 'utf-8',
 		}),
 	);
+
+	console.log(modules)
+	console.log(dependencies)
+
+	console.log("parsed JSON")
 
 	const cap = txb.publish({
 		modules,
 		dependencies,
 	});
+
+	console.log("txb published")
 
 	const sender = txb.moveCall({
 		target: `0x2::tx_context::sender`,
@@ -47,6 +57,8 @@ export const publishPackage = (txb: Transaction, path: string, configPath?: stri
 
 	// Transfer the upgrade capability to the sender so they can upgrade the package later if they want.
 	txb.transferObjects([cap], sender);
+
+	console.log("transferred cap")
 };
 
 /// Returns a signer based on the active address of system's sui.
