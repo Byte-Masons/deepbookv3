@@ -10,7 +10,7 @@ use deepbook::balances::{Self, Balances};
 use deepbook::constants;
 use deepbook::math;
 use deepbook::trade_params::TradeParams;
-use sui::table::{Self, Table};
+use iota::table::{Self, Table};
 
 // === Errors ===
 const EHistoricVolumesNotFound: u64 = 0;

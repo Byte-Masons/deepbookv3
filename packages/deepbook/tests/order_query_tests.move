@@ -16,9 +16,9 @@ use deepbook::pool_tests::{
     setup_pool_with_default_fees_and_reference_pool,
     place_limit_order
 };
-use sui::sui::SUI;
-use sui::test_scenario::{begin, end, return_shared};
-use sui::test_utils;
+use iota::iota::SUI;
+use iota::test_scenario::{begin, end, return_shared};
+use iota::test_utils;
 use token::deep::DEEP;
 
 const OWNER: address = @0x1;

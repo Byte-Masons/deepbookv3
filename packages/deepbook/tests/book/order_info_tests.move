@@ -9,9 +9,9 @@ use deepbook::constants;
 use deepbook::deep_price;
 use deepbook::order_info::{Self, OrderInfo};
 use deepbook::utils;
-use sui::object::id_from_address;
-use sui::test_scenario::{next_tx, begin, end};
-use sui::test_utils::assert_eq;
+use iota::object::id_from_address;
+use iota::test_scenario::{next_tx, begin, end};
+use iota::test_utils::assert_eq;
 
 const OWNER: address = @0xF;
 const ALICE: address = @0xA;

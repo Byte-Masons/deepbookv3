@@ -20,11 +20,11 @@ use deepbook::order_info::OrderInfo;
 use deepbook::pool::{Self, Pool};
 use deepbook::registry::{Self, Registry};
 use deepbook::utils;
-use sui::clock::{Self, Clock};
-use sui::coin::{Coin, mint_for_testing};
-use sui::sui::SUI;
-use sui::test_scenario::{Scenario, begin, end, return_shared};
-use sui::test_utils;
+use iota::clock::{Self, Clock};
+use iota::coin::{Coin, mint_for_testing};
+use iota::iota::SUI;
+use iota::test_scenario::{Scenario, begin, end, return_shared};
+use iota::test_utils;
 use token::deep::DEEP;
 
 const OWNER: address = @0x1;

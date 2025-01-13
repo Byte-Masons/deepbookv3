@@ -11,7 +11,7 @@ use deepbook::deep_price::OrderDeepPrice;
 use deepbook::fill::Fill;
 use deepbook::math;
 use deepbook::order::{Self, Order};
-use sui::event;
+use iota::event;
 
 // === Errors ===
 const EOrderInvalidPrice: u64 = 0;

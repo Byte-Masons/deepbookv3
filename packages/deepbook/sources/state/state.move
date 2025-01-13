@@ -15,8 +15,8 @@ use deepbook::history::{Self, History};
 use deepbook::math;
 use deepbook::order::Order;
 use deepbook::order_info::OrderInfo;
-use sui::event;
-use sui::table::{Self, Table};
+use iota::event;
+use iota::table::{Self, Table};
 
 // === Errors ===
 const ENoStake: u64 = 1;

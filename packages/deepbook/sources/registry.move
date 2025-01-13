@@ -6,9 +6,9 @@ module deepbook::registry;
 
 use deepbook::constants;
 use std::type_name::{Self, TypeName};
-use sui::bag::{Self, Bag};
-use sui::vec_set::{Self, VecSet};
-use sui::versioned::{Self, Versioned};
+use iota::bag::{Self, Bag};
+use iota::vec_set::{Self, VecSet};
+use iota::versioned::{Self, Versioned};
 
 // === Errors ===
 const EPoolAlreadyExists: u64 = 1;

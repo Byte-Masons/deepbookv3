@@ -6,10 +6,10 @@ module deepbook::governance_tests;
 
 use deepbook::constants;
 use deepbook::governance;
-use sui::address;
-use sui::object::id_from_address;
-use sui::test_scenario::{next_tx, begin, end};
-use sui::test_utils::{destroy, assert_eq};
+use iota::address;
+use iota::object::id_from_address;
+use iota::test_scenario::{next_tx, begin, end};
+use iota::test_utils::{destroy, assert_eq};
 
 const OWNER: address = @0xF;
 const ALICE: address = @0xA;

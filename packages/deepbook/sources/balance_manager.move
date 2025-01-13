@@ -9,11 +9,11 @@
 module deepbook::balance_manager;
 
 use std::type_name::{Self, TypeName};
-use sui::bag::{Self, Bag};
-use sui::balance::{Self, Balance};
-use sui::coin::Coin;
-use sui::event;
-use sui::vec_set::{Self, VecSet};
+use iota::bag::{Self, Bag};
+use iota::balance::{Self, Balance};
+use iota::coin::Coin;
+use iota::event;
+use iota::vec_set::{Self, VecSet};
 
 // === Errors ===
 const EInvalidOwner: u64 = 0;

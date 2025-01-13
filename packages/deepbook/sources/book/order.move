@@ -11,7 +11,7 @@ use deepbook::deep_price::OrderDeepPrice;
 use deepbook::fill::{Self, Fill};
 use deepbook::math;
 use deepbook::utils;
-use sui::event;
+use iota::event;
 
 // === Errors ===
 const EInvalidNewQuantity: u64 = 0;

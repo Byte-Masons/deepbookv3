@@ -17,9 +17,9 @@
 /// because the expectation is that indices are sparsely distributed.
 module deepbook::big_vector;
 
-use sui::dynamic_field as df;
+use iota::dynamic_field as df;
 
-use fun sui::object::new as TxContext.new;
+use fun iota::object::new as TxContext.new;
 
 use fun deepbook::utils::pop_until as vector.pop_until;
 use fun deepbook::utils::pop_n as vector.pop_n;

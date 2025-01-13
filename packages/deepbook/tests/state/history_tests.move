@@ -8,8 +8,8 @@ use deepbook::balances;
 use deepbook::constants;
 use deepbook::history;
 use deepbook::trade_params;
-use sui::test_scenario::{begin, end};
-use sui::test_utils;
+use iota::test_scenario::{begin, end};
+use iota::test_utils;
 
 const EWrongRebateAmount: u64 = 0;
 

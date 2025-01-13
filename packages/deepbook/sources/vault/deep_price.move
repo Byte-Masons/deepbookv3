@@ -6,7 +6,7 @@
 module deepbook::deep_price;
 
 use deepbook::math;
-use sui::event;
+use iota::event;
 
 // === Errors ===
 const EDataPointRecentlyAdded: u64 = 1;

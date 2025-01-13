@@ -6,7 +6,7 @@ module deepbook::account;
 
 use deepbook::balances::{Self, Balances};
 use deepbook::fill::Fill;
-use sui::vec_set::{Self, VecSet};
+use iota::vec_set::{Self, VecSet};
 
 // === Structs ===
 /// Account data that is updated every epoch.

@@ -13,9 +13,9 @@ use deepbook::balance_manager_tests::{
 use deepbook::balances;
 use deepbook::constants;
 use deepbook::vault;
-use sui::object::id_from_address;
-use sui::test_scenario::{next_tx, begin, end};
-use sui::test_utils::destroy;
+use iota::object::id_from_address;
+use iota::test_scenario::{next_tx, begin, end};
+use iota::test_utils::destroy;
 
 const OWNER: address = @0xF;
 const ALICE: address = @0xA;

@@ -22,11 +22,11 @@ use deepbook::registry::{DeepbookAdminCap, Registry};
 use deepbook::state::{Self, State};
 use deepbook::vault::{Self, Vault, FlashLoan};
 use std::type_name;
-use sui::clock::Clock;
-use sui::coin::{Self, Coin};
-use sui::event;
-use sui::vec_set::{Self, VecSet};
-use sui::versioned::{Self, Versioned};
+use iota::clock::Clock;
+use iota::coin::{Self, Coin};
+use iota::event;
+use iota::vec_set::{Self, VecSet};
+use iota::versioned::{Self, Versioned};
 use token::deep::{DEEP, ProtectedTreasury};
 
 // === Errors ===
@@ -40,11 +40,12 @@ const EIneligibleReferencePool: u64 = 7;
 const EFeeTypeNotSupported: u64 = 8;
 const EInvalidOrderBalanceManager: u64 = 9;
 const EIneligibleTargetPool: u64 = 10;
-const EPackageVersionDisabled: u64 = 11;
-const EMinimumQuantityOutNotMet: u64 = 12;
-const EInvalidStake: u64 = 13;
-const EPoolNotRegistered: u64 = 14;
-const EPoolCannotBeBothWhitelistedAndStable: u64 = 15;
+const ENoAmountToBurn: u64 = 11;
+const EPackageVersionDisabled: u64 = 12;
+const EMinimumQuantityOutNotMet: u64 = 13;
+const EInvalidStake: u64 = 14;
+const EPoolNotRegistered: u64 = 15;
+const EPoolCannotBeBothWhitelistedAndStable: u64 = 16;
 
 // === Structs ===
 public struct Pool<phantom BaseAsset, phantom QuoteAsset> has key {
@@ -85,14 +86,6 @@ public struct BookParamsUpdated<
     lot_size: u64,
     min_size: u64,
     timestamp: u64,
-}
-
-public struct DeepBurned<
-    phantom BaseAsset,
-    phantom QuoteAsset,
-> has copy, store, drop {
-    pool_id: ID,
-    deep_burned: u64,
 }
 
 // === Public-Mutative Functions * EXCHANGE * ===
@@ -638,17 +631,13 @@ public fun burn_deep<BaseAsset, QuoteAsset>(
 ): u64 {
     let self = self.load_inner_mut();
     let balance_to_burn = self.state.history_mut().reset_balance_to_burn();
+    assert!(balance_to_burn > 0, ENoAmountToBurn);
     let deep_to_burn = self
         .vault
         .withdraw_deep_to_burn(balance_to_burn)
         .into_coin(ctx);
     let amount_burned = deep_to_burn.value();
     token::deep::burn(treasury_cap, deep_to_burn);
-
-    event::emit(DeepBurned<BaseAsset, QuoteAsset> {
-        pool_id: self.pool_id,
-        deep_burned: amount_burned,
-    });
 
     amount_burned
 }
@@ -1046,13 +1035,6 @@ public fun account<BaseAsset, QuoteAsset>(
     let self = self.load_inner();
 
     *self.state.account(balance_manager.id())
-}
-
-/// Returns the quorum needed to pass proposal in the current epoch
-public fun quorum<BaseAsset, QuoteAsset>(
-    self: &Pool<BaseAsset, QuoteAsset>,
-): u64 {
-    self.load_inner().state.governance().quorum()
 }
 
 // === Public-Package Functions ===
