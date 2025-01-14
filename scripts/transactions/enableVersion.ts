@@ -1,10 +1,10 @@
 // Copyright (c) Mysten Labs, Inc.
 // SPDX-License-Identifier: Apache-2.0
-import { Transaction } from '@mysten/sui/transactions';
+import { Transaction } from '@iota/iota-sdk/transactions';
 import { prepareMultisigTx } from '../utils/utils';
 import { adminCapOwner, adminCapID } from '../config/constants';
-import { DeepBookClient } from '@mysten/deepbook-v3';
-import { getFullnodeUrl, SuiClient } from '@mysten/sui/client';
+import { DeepBookClient } from 'deepbook-v3-iota';
+import { getFullnodeUrl, IotaClient } from '@iota/iota-sdk/client';
 
 (async () => {
 	// Update constant for env
@@ -22,7 +22,7 @@ import { getFullnodeUrl, SuiClient } from '@mysten/sui/client';
 	const dbClient = new DeepBookClient({
 		address: '0x0',
 		env: env,
-		client: new SuiClient({
+		client: new IotaClient({
 			url: getFullnodeUrl(env),
 		}),
 		balanceManagers: balanceManagers,

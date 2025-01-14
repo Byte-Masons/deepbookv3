@@ -1,4 +1,4 @@
-import { Transaction } from '@mysten/sui/transactions';
+import { Transaction } from '@iota/iota-sdk/transactions';
 import { publishPackage } from './utils';
 
 // Create a new transaction block

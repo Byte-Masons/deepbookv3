@@ -1,17 +1,17 @@
 // Copyright (c) Mysten Labs, Inc.
 // SPDX-License-Identifier: Apache-2.0
-import { getFullnodeUrl, SuiClient } from '@mysten/sui/client';
-import { decodeSuiPrivateKey } from '@mysten/sui/cryptography';
-import type { Keypair } from '@mysten/sui/cryptography';
-import { Ed25519Keypair } from '@mysten/sui/keypairs/ed25519';
-import type { Transaction } from '@mysten/sui/transactions';
+import { getFullnodeUrl, IotaClient } from '@iota/iota-sdk/client';
+import { decodeIotaPrivateKey } from '@iota/iota-sdk/cryptography';
+import type { Keypair } from '@iota/iota-sdk/cryptography';
+import { Ed25519Keypair } from '@iota/iota-sdk/keypairs/ed25519';
+import type { Transaction } from '@iota/iota-sdk/transactions';
 
-import { DeepBookClient } from '@mysten/deepbook-v3';
-import type { BalanceManager } from '@mysten/deepbook-v3';
+import { DeepBookClient } from 'deepbook-v3-iota';
+import type { BalanceManager } from 'deepbook-v3-iota';
 
 export class DeepBookMarketMaker extends DeepBookClient {
 	keypair: Keypair;
-	suiClient: SuiClient;
+	suiClient: IotaClient;
 
 	constructor(
 		keypair: string | Keypair,
@@ -27,12 +27,12 @@ export class DeepBookMarketMaker extends DeepBookClient {
 			resolvedKeypair = keypair;
 		}
 
-		const address = resolvedKeypair.toSuiAddress();
+		const address = resolvedKeypair.toIotaAddress();
 
 		super({
 			address: address,
 			env: env,
-			client: new SuiClient({
+			client: new IotaClient({
 				url: getFullnodeUrl(env),
 			}),
 			balanceManagers: balanceManagers,
@@ -40,13 +40,13 @@ export class DeepBookMarketMaker extends DeepBookClient {
 		});
 
 		this.keypair = resolvedKeypair;
-		this.suiClient = new SuiClient({
+		this.suiClient = new IotaClient({
 			url: getFullnodeUrl(env),
 		});
 	}
 
 	static #getSignerFromPK = (privateKey: string) => {
-		const { schema, secretKey } = decodeSuiPrivateKey(privateKey);
+		const { schema, secretKey } = decodeIotaPrivateKey(privateKey);
 		if (schema === 'ED25519') return Ed25519Keypair.fromSecretKey(secretKey);
 
 		throw new Error(`Unsupported schema: ${schema}`);
@@ -64,7 +64,7 @@ export class DeepBookMarketMaker extends DeepBookClient {
 	};
 
 	getActiveAddress() {
-		return this.keypair.getPublicKey().toSuiAddress();
+		return this.keypair.getPublicKey().toIotaAddress();
 	}
 
 	// Example of a flash loan transaction

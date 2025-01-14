@@ -11,8 +11,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@mysten/deepbook-v3": "^0.12.10",
-    "@mysten/sui": "^1.14.4",
+    "@iota/iota-sdk": "^0.4.0",
+    "deepbook-v3-iota": "^0.0.0",
     "dotenv": "^16.4.5",
     "ts-node": "^10.9.2",
     "tsx": "^4.19.2"

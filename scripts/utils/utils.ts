@@ -4,13 +4,13 @@ import { execFileSync, execSync } from 'child_process';
 import fs, { readFileSync } from 'fs';
 import { homedir } from 'os';
 import path from 'path';
-import { getFullnodeUrl, SuiClient } from '@mysten/sui/client';
-import { decodeSuiPrivateKey } from '@mysten/sui/cryptography';
-import { Ed25519Keypair } from '@mysten/sui/keypairs/ed25519';
-import { Secp256k1Keypair } from '@mysten/sui/keypairs/secp256k1';
-import { Secp256r1Keypair } from '@mysten/sui/keypairs/secp256r1';
-import { Transaction } from '@mysten/sui/transactions';
-import { fromBase64, toBase64 } from '@mysten/sui/utils';
+import { getFullnodeUrl, IotaClient } from '@iota/iota-sdk/client';
+import { decodeIotaPrivateKey } from '@iota/iota-sdk/cryptography';
+import { Ed25519Keypair } from '@iota/iota-sdk/keypairs/ed25519';
+import { Secp256k1Keypair } from '@iota/iota-sdk/keypairs/secp256k1';
+import { Secp256r1Keypair } from '@iota/iota-sdk/keypairs/secp256r1';
+import { Transaction } from '@iota/iota-sdk/transactions';
+import { fromB64, toB64 } from '@iota/iota-sdk/utils';
 
 export type Network = 'mainnet' | 'testnet' | 'devnet' | 'localnet';
 
@@ -65,7 +65,7 @@ export const publishPackage = (txb: Transaction, path: string, configPath?: stri
 export const getSigner = () => {
 	if (process.env.PRIVATE_KEY) {
 		console.log('Using supplied private key.');
-		const { schema, secretKey } = decodeSuiPrivateKey(process.env.PRIVATE_KEY);
+		const { schema, secretKey } = decodeIotaPrivateKey(process.env.PRIVATE_KEY);
 
 		if (schema === 'ED25519') return Ed25519Keypair.fromSecretKey(secretKey);
 		if (schema === 'Secp256k1') return Secp256k1Keypair.fromSecretKey(secretKey);
@@ -81,13 +81,13 @@ export const getSigner = () => {
 	);
 
 	for (const priv of keystore) {
-		const raw = fromBase64(priv);
+		const raw = fromB64(priv);
 		if (raw[0] !== 0) {
 			continue;
 		}
 
 		const pair = Ed25519Keypair.fromSecretKey(raw.slice(1));
-		if (pair.getPublicKey().toSuiAddress() === sender) {
+		if (pair.getPublicKey().toIotaAddress() === sender) {
 			return pair;
 		}
 	}
@@ -98,7 +98,7 @@ export const getSigner = () => {
 /// Get the client for the specified network.
 export const getClient = (network: Network) => {
 	const url = process.env.RPC_URL || getFullnodeUrl(network);
-	return new SuiClient({ url });
+	return new IotaClient({ url });
 };
 
 /// Builds a transaction (unsigned) and saves it on `setup/tx/tx-data.txt` (on production)
@@ -132,7 +132,7 @@ export const prepareMultisigTx = async (
 	tx.build({
 		client: client,
 	}).then((bytes) => {
-		let serializedBase64 = toBase64(bytes);
+		let serializedBase64 = toB64(bytes);
 
 		const output_location =
 			process.env.NODE_ENV === 'development' ? './tx/tx-data-local.txt' : './tx/tx-data.txt';
@@ -142,7 +142,7 @@ export const prepareMultisigTx = async (
 };
 
 /// Fetch the gas Object and setup the payment for the tx.
-async function setupGasPayment(tx: Transaction, gasObjectId: string, client: SuiClient) {
+async function setupGasPayment(tx: Transaction, gasObjectId: string, client: IotaClient) {
 	const gasObject = await client.getObject({
 		id: gasObjectId,
 	});
@@ -160,7 +160,7 @@ async function setupGasPayment(tx: Transaction, gasObjectId: string, client: Sui
 }
 
 /// A helper to dev inspect a transaction.
-async function inspectTransaction(tx: Transaction, client: SuiClient) {
+async function inspectTransaction(tx: Transaction, client: IotaClient) {
 	const result = await client.dryRunTransactionBlock({
 		transactionBlock: await tx.build({ client: client }),
 	});
