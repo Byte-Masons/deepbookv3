@@ -11,7 +11,7 @@ module deepbook::master_tests {
             return_shared,
             return_to_sender,
         },
-        iota::SUI,
+        iota::IOTA,
         clock::{Clock},
     };
     use deepbook::{
@@ -209,14 +209,14 @@ module deepbook::master_tests {
             &mut test
         );
 
-        // Create two pools, one with SUI as base asset and one with SPAM as base asset
-        let pool1_reference_id = pool_tests::setup_reference_pool<SUI, DEEP>(OWNER, registry_id, owner_balance_manager_id, 100 * constants::float_scaling(), &mut test);
+        // Create two pools, one with IOTA as base asset and one with SPAM as base asset
+        let pool1_reference_id = pool_tests::setup_reference_pool<IOTA, DEEP>(OWNER, registry_id, owner_balance_manager_id, 100 * constants::float_scaling(), &mut test);
 
-        // Create two pools, one with SUI as base asset and one with SPAM as base asset
-        let pool1_id = pool_tests::setup_pool_with_default_fees<SUI, USDC>(OWNER, registry_id, false, false, &mut test);
+        // Create two pools, one with IOTA as base asset and one with SPAM as base asset
+        let pool1_id = pool_tests::setup_pool_with_default_fees<IOTA, USDC>(OWNER, registry_id, false, false, &mut test);
 
         // Default price point of 100 deep per base will be added
-        pool_tests::add_deep_price_point<SUI, USDC, SUI, DEEP>(
+        pool_tests::add_deep_price_point<IOTA, USDC, IOTA, DEEP>(
             OWNER,
             pool1_id,
             pool1_reference_id,
@@ -254,10 +254,10 @@ module deepbook::master_tests {
         // Epoch 0
         assert!(test.ctx().epoch() == 0, 0);
 
-        check_locked_balance<SUI, USDC>(ALICE, pool1_id, alice_balance_manager_id, &alice_locked_balance, &mut test);
+        check_locked_balance<IOTA, USDC>(ALICE, pool1_id, alice_balance_manager_id, &alice_locked_balance, &mut test);
 
         // Alice places an order in pool 1
-        pool_tests::place_limit_order<SUI, USDC>(
+        pool_tests::place_limit_order<IOTA, USDC>(
             ALICE,
             pool1_id,
             alice_balance_manager_id,
@@ -282,10 +282,10 @@ module deepbook::master_tests {
             quantity
         );
 
-        check_locked_balance<SUI, USDC>(ALICE, pool1_id, alice_balance_manager_id, &alice_locked_balance, &mut test);
+        check_locked_balance<IOTA, USDC>(ALICE, pool1_id, alice_balance_manager_id, &alice_locked_balance, &mut test);
 
         // Bob places an order in pool 1, fills half of Alice's order
-        pool_tests::place_limit_order<SUI, USDC>(
+        pool_tests::place_limit_order<IOTA, USDC>(
             BOB,
             pool1_id,
             bob_balance_manager_id,
@@ -313,10 +313,10 @@ module deepbook::master_tests {
             quantity
         ) / 2;
 
-        check_locked_balance<SUI, USDC>(ALICE, pool1_id, alice_balance_manager_id, &alice_locked_balance, &mut test);
+        check_locked_balance<IOTA, USDC>(ALICE, pool1_id, alice_balance_manager_id, &alice_locked_balance, &mut test);
 
         // Alice places one more order in pool 1
-        pool_tests::place_limit_order<SUI, USDC>(
+        pool_tests::place_limit_order<IOTA, USDC>(
             ALICE,
             pool1_id,
             alice_balance_manager_id,
@@ -343,7 +343,7 @@ module deepbook::master_tests {
             quantity
         );
 
-        check_locked_balance<SUI, USDC>(ALICE, pool1_id, alice_balance_manager_id, &alice_locked_balance, &mut test);
+        check_locked_balance<IOTA, USDC>(ALICE, pool1_id, alice_balance_manager_id, &alice_locked_balance, &mut test);
 
         end(test);
     }
@@ -362,19 +362,19 @@ module deepbook::master_tests {
             &mut test
         );
 
-        // Create two pools, one with SUI as base asset and one with SPAM as base asset
-        let pool1_reference_id = pool_tests::setup_reference_pool<SUI, DEEP>(OWNER, registry_id, owner_balance_manager_id, 100 * constants::float_scaling(), &mut test);
+        // Create two pools, one with IOTA as base asset and one with SPAM as base asset
+        let pool1_reference_id = pool_tests::setup_reference_pool<IOTA, DEEP>(OWNER, registry_id, owner_balance_manager_id, 100 * constants::float_scaling(), &mut test);
         let pool2_reference_id = pool_tests::setup_reference_pool<SPAM, DEEP>(OWNER, registry_id, owner_balance_manager_id, 100 * constants::float_scaling(), &mut test);
 
-        // Create two pools, one with SUI as base asset and one with SPAM as base asset
-        let pool1_id = pool_tests::setup_pool_with_default_fees<SUI, USDC>(OWNER, registry_id, false, false, &mut test);
+        // Create two pools, one with IOTA as base asset and one with SPAM as base asset
+        let pool1_id = pool_tests::setup_pool_with_default_fees<IOTA, USDC>(OWNER, registry_id, false, false, &mut test);
         if (error_code == EDuplicatePool) {
-            pool_tests::setup_pool_with_default_fees<USDC, SUI>(OWNER, registry_id, false, false, &mut test);
+            pool_tests::setup_pool_with_default_fees<USDC, IOTA>(OWNER, registry_id, false, false, &mut test);
         };
         let pool2_id = pool_tests::setup_pool_with_default_fees<SPAM, USDC>(OWNER, registry_id, false, false, &mut test);
 
         if (error_code == EAddPricePointUnregisteredPool) {
-            pool_tests::unregister_pool<SUI, DEEP>(
+            pool_tests::unregister_pool<IOTA, DEEP>(
                 pool1_reference_id,
                 registry_id,
                 &mut test,
@@ -382,7 +382,7 @@ module deepbook::master_tests {
         };
 
         // Default price point of 100 deep per base will be added
-        pool_tests::add_deep_price_point<SUI, USDC, SUI, DEEP>(
+        pool_tests::add_deep_price_point<IOTA, USDC, IOTA, DEEP>(
             OWNER,
             pool1_id,
             pool1_reference_id,
@@ -437,7 +437,7 @@ module deepbook::master_tests {
         assert!(test.ctx().epoch() == 0, 0);
 
         if (error_code == ENotEnoughFunds) {
-            pool_tests::place_limit_order<SUI, USDC>(
+            pool_tests::place_limit_order<IOTA, USDC>(
                 ALICE,
                 pool1_id,
                 alice_balance_manager_id,
@@ -453,7 +453,7 @@ module deepbook::master_tests {
             );
         };
 
-        withdraw_settled_amounts<SUI, USDC>(
+        withdraw_settled_amounts<IOTA, USDC>(
             ALICE,
             pool1_id,
             alice_balance_manager_id,
@@ -461,7 +461,7 @@ module deepbook::master_tests {
         );
 
         // Alice places bid order in pool 1
-        let order_info_1 = pool_tests::place_limit_order<SUI, USDC>(
+        let order_info_1 = pool_tests::place_limit_order<IOTA, USDC>(
             ALICE,
             pool1_id,
             alice_balance_manager_id,
@@ -509,7 +509,7 @@ module deepbook::master_tests {
         );
 
         if (error_code == EInvalidStake) {
-            stake<SUI, USDC>(
+            stake<IOTA, USDC>(
                 ALICE,
                 pool1_id,
                 alice_balance_manager_id,
@@ -519,7 +519,7 @@ module deepbook::master_tests {
         };
 
         // Alice stakes 100 DEEP into pool 1 during epoch 0 to be effective in epoch 1
-        stake<SUI, USDC>(
+        stake<IOTA, USDC>(
             ALICE,
             pool1_id,
             alice_balance_manager_id,
@@ -534,7 +534,7 @@ module deepbook::master_tests {
         );
 
         if (error_code == EIncorrectStakeOwner) {
-            stake<SUI, USDC>(
+            stake<IOTA, USDC>(
                 BOB,
                 pool1_id,
                 alice_balance_manager_id,
@@ -544,7 +544,7 @@ module deepbook::master_tests {
         };
 
         // Bob stakes 100 DEEP into pool 1 during epoch 1
-        stake<SUI, USDC>(
+        stake<IOTA, USDC>(
             BOB,
             pool1_id,
             bob_balance_manager_id,
@@ -559,7 +559,7 @@ module deepbook::master_tests {
         );
 
         if (error_code == ECannotPropose) {
-            submit_proposal<SUI, USDC>(
+            submit_proposal<IOTA, USDC>(
                 ALICE,
                 pool1_id,
                 alice_balance_manager_id,
@@ -577,7 +577,7 @@ module deepbook::master_tests {
         test.next_epoch(OWNER);
         assert!(test.ctx().epoch() == 1, 0);
 
-        submit_proposal<SUI, USDC>(
+        submit_proposal<IOTA, USDC>(
             ALICE,
             pool1_id,
             alice_balance_manager_id,
@@ -597,7 +597,7 @@ module deepbook::master_tests {
         taker_fee = 600_000;
 
         // Alice should get refunded the previous fees for the order
-        pool_tests::cancel_order<SUI, USDC>(
+        pool_tests::cancel_order<IOTA, USDC>(
             ALICE,
             pool1_id,
             alice_balance_manager_id,
@@ -618,7 +618,7 @@ module deepbook::master_tests {
         let client_order_id = 2;
 
         // Alice should pay new fees for the order, maker fee should be 0.02%
-        pool_tests::place_limit_order<SUI, USDC>(
+        pool_tests::place_limit_order<IOTA, USDC>(
             ALICE,
             pool1_id,
             alice_balance_manager_id,
@@ -649,7 +649,7 @@ module deepbook::master_tests {
         // Bob places market ask order with large size in pool 1, only quantity 3 should be filled with Alice's bid order
         // Bob will not get discounted fees as even though he's staked, there's volume traded yet
         // Taker fee paid should be 0.06%
-        pool_tests::place_market_order<SUI, USDC>(
+        pool_tests::place_market_order<IOTA, USDC>(
             BOB,
             pool1_id,
             bob_balance_manager_id,
@@ -673,7 +673,7 @@ module deepbook::master_tests {
         );
 
         // Alice withdraws settled amounts twice, should only settle once
-        withdraw_settled_amounts<SUI, USDC>(
+        withdraw_settled_amounts<IOTA, USDC>(
             ALICE,
             pool1_id,
             alice_balance_manager_id,
@@ -681,7 +681,7 @@ module deepbook::master_tests {
         );
         alice_balance.sui = alice_balance.sui + executed_quantity;
 
-        withdraw_settled_amounts<SUI, USDC>(
+        withdraw_settled_amounts<IOTA, USDC>(
             ALICE,
             pool1_id,
             alice_balance_manager_id,
@@ -700,7 +700,7 @@ module deepbook::master_tests {
         test.next_epoch(OWNER);
         assert!(test.ctx().epoch() == 3, 0);
 
-        submit_proposal<SUI, USDC>(
+        submit_proposal<IOTA, USDC>(
             ALICE,
             pool1_id,
             alice_balance_manager_id,
@@ -710,7 +710,7 @@ module deepbook::master_tests {
             &mut test
         );
 
-        unstake<SUI, USDC>(
+        unstake<IOTA, USDC>(
             ALICE,
             pool1_id,
             alice_balance_manager_id,
@@ -723,7 +723,7 @@ module deepbook::master_tests {
             &mut test
         );
 
-        submit_proposal<SUI, USDC>(
+        submit_proposal<IOTA, USDC>(
             BOB,
             pool1_id,
             bob_balance_manager_id,
@@ -741,7 +741,7 @@ module deepbook::master_tests {
         test.next_epoch(OWNER);
         assert!(test.ctx().epoch() == 4, 0);
 
-        claim_rebates<SUI, USDC>(
+        claim_rebates<IOTA, USDC>(
             ALICE,
             pool1_id,
             alice_balance_manager_id,
@@ -759,7 +759,7 @@ module deepbook::master_tests {
         );
 
         if (error_code == EIncorrectRebateClaimer) {
-            claim_rebates<SUI, USDC>(
+            claim_rebates<IOTA, USDC>(
                 BOB,
                 pool1_id,
                 alice_balance_manager_id,
@@ -768,7 +768,7 @@ module deepbook::master_tests {
         };
 
         // Bob will get no rebates
-        claim_rebates<SUI, USDC>(
+        claim_rebates<IOTA, USDC>(
             BOB,
             pool1_id,
             bob_balance_manager_id,
@@ -781,7 +781,7 @@ module deepbook::master_tests {
         );
 
         // Alice restakes 100 DEEP into pool 1 during epoch 4
-        stake<SUI, USDC>(
+        stake<IOTA, USDC>(
             ALICE,
             pool1_id,
             alice_balance_manager_id,
@@ -796,7 +796,7 @@ module deepbook::master_tests {
         );
 
         // Now the vault balance should only include the 2 stakes of 100 DEEP
-        check_vault_balances<SUI, USDC>(
+        check_vault_balances<IOTA, USDC>(
             pool1_id,
             &balances::new(
                 0,
@@ -815,11 +815,11 @@ module deepbook::master_tests {
         // Bob will not get discount because he takes Alice's order
         // Fees paid for each should be 0.02% maker for both, 0.03% taker for Alice, 0.06% taker for Bob
         // Total fees collected should be 0.065% for each epoch
-        // Alice should have 46 more SUI at the end of the loop
+        // Alice should have 46 more IOTA at the end of the loop
         // Bob should have 92 more USDC at the end of the loop
         while (i > 0) {
             test.next_epoch(OWNER);
-            execute_cross_trading<SUI, USDC>(
+            execute_cross_trading<IOTA, USDC>(
                 pool1_id,
                 alice_balance_manager_id,
                 bob_balance_manager_id,
@@ -865,7 +865,7 @@ module deepbook::master_tests {
         assert!(test.ctx().epoch() == 28, 0);
 
         // Alice claims rebates for the past 23 epochs
-        claim_rebates<SUI, USDC>(
+        claim_rebates<IOTA, USDC>(
             ALICE,
             pool1_id,
             alice_balance_manager_id,
@@ -883,7 +883,7 @@ module deepbook::master_tests {
         );
 
         // Bob claims rebates for the past 23 epochs
-        claim_rebates<SUI, USDC>(
+        claim_rebates<IOTA, USDC>(
             BOB,
             pool1_id,
             bob_balance_manager_id,
@@ -902,7 +902,7 @@ module deepbook::master_tests {
 
         // Since all rebates are to be claimed, there are no amounts to burn
         if (error_code == ENoAmountToBurn) {
-            burn_deep<SUI, USDC>(
+            burn_deep<IOTA, USDC>(
                 ALICE,
                 pool1_id,
                 0,
@@ -913,7 +913,7 @@ module deepbook::master_tests {
         // Same cross trading happens during epoch 28
         // quantity being traded is halved, each person will make 0.5 quantity and take 0.5 quantity
         let quantity = 500_000_000;
-        execute_cross_trading<SUI, USDC>(
+        execute_cross_trading<IOTA, USDC>(
             pool1_id,
             alice_balance_manager_id,
             bob_balance_manager_id,
@@ -955,13 +955,13 @@ module deepbook::master_tests {
         // Epoch 29. Rebates should now be using the normal calculation
         test.next_epoch(OWNER);
         assert!(test.ctx().epoch() == 29, 0);
-        claim_rebates<SUI, USDC>(
+        claim_rebates<IOTA, USDC>(
             ALICE,
             pool1_id,
             alice_balance_manager_id,
             &mut test
         );
-        claim_rebates<SUI, USDC>(
+        claim_rebates<IOTA, USDC>(
             BOB,
             pool1_id,
             bob_balance_manager_id,
@@ -995,7 +995,7 @@ module deepbook::master_tests {
             &bob_balance,
             &mut test
         );
-        burn_deep<SUI, USDC>(
+        burn_deep<IOTA, USDC>(
             ALICE,
             pool1_id,
             expected_amount_burned,
@@ -1004,7 +1004,7 @@ module deepbook::master_tests {
 
         // Trying to burn again will fail
         if (error_code == ENoAmountToBurn2) {
-            burn_deep<SUI, USDC>(
+            burn_deep<IOTA, USDC>(
                 ALICE,
                 pool1_id,
                 0,
@@ -1030,12 +1030,12 @@ module deepbook::master_tests {
         );
 
         // Create two pools, pool 1 will be used as reference pool
-        let pool1_id = pool_tests::setup_reference_pool<SUI, DEEP>(OWNER, registry_id, owner_balance_manager_id, 100 * constants::float_scaling(), &mut test);
-        let pool2_id = pool_tests::setup_pool_with_default_fees<SPAM, SUI>(OWNER, registry_id, false, false, &mut test);
+        let pool1_id = pool_tests::setup_reference_pool<IOTA, DEEP>(OWNER, registry_id, owner_balance_manager_id, 100 * constants::float_scaling(), &mut test);
+        let pool2_id = pool_tests::setup_pool_with_default_fees<SPAM, IOTA>(OWNER, registry_id, false, false, &mut test);
 
         // Default price point of 10 deep per base (SPAM) will be added
         pool_tests::set_time(0, &mut test);
-        pool_tests::add_deep_price_point<SPAM, SUI, SUI, DEEP>(
+        pool_tests::add_deep_price_point<SPAM, IOTA, IOTA, DEEP>(
             OWNER,
             pool2_id,
             pool1_id,
@@ -1043,7 +1043,7 @@ module deepbook::master_tests {
         );
 
         // Default mid price for pool should be 100 for tests only
-        check_mid_price<SUI, DEEP>(
+        check_mid_price<IOTA, DEEP>(
             pool1_id,
             100 * constants::float_scaling(),
             &mut test
@@ -1091,7 +1091,7 @@ module deepbook::master_tests {
         // Trading within pool 1 should have no fees
         // Alice should get 2 more sui, Bob should lose 2 sui
         // Alice should get 200 less deep, Bob should get 200 deep
-        execute_cross_trading<SUI, DEEP>(
+        execute_cross_trading<IOTA, DEEP>(
             pool1_id,
             alice_balance_manager_id,
             bob_balance_manager_id,
@@ -1120,7 +1120,7 @@ module deepbook::master_tests {
         );
 
         // Alice stakes 100 deep into pool 2
-        stake<SPAM, SUI>(
+        stake<SPAM, IOTA>(
             ALICE,
             pool2_id,
             alice_balance_manager_id,
@@ -1132,7 +1132,7 @@ module deepbook::master_tests {
         pool_tests::set_time(100_000, &mut test);
 
         // Bob stakes 100 deep into pool 2
-        stake<SPAM, SUI>(
+        stake<SPAM, IOTA>(
             BOB,
             pool2_id,
             bob_balance_manager_id,
@@ -1143,7 +1143,7 @@ module deepbook::master_tests {
 
         // Alice places a bid order in pool 1 with quantity 1, price 125
         let price = 125 * constants::float_scaling();
-        pool_tests::place_limit_order<SUI, DEEP>(
+        pool_tests::place_limit_order<IOTA, DEEP>(
             ALICE,
             pool1_id,
             alice_balance_manager_id,
@@ -1162,7 +1162,7 @@ module deepbook::master_tests {
 
         // Bob places a ask order in pool 1 with quantity 1, price 175
         let price = 175 * constants::float_scaling();
-        pool_tests::place_limit_order<SUI, DEEP>(
+        pool_tests::place_limit_order<IOTA, DEEP>(
             BOB,
             pool1_id,
             bob_balance_manager_id,
@@ -1193,14 +1193,14 @@ module deepbook::master_tests {
         // Epoch 1
         // Pool 2 now uses pool 1 as reference pool
         // Pool 2 deep per base should be 0 (non functional)
-        // Pool 2 deep per quote should be 150 (150 DEEP per SUI)
+        // Pool 2 deep per quote should be 150 (150 DEEP per IOTA)
         // Stakes in pool 2 for both Alice and Bob are in effect
         test.next_epoch(OWNER);
         assert!(test.ctx().epoch() == 1, 0);
         pool_tests::set_time(200_000, &mut test);
 
         // New deep per quote is 125, the average of 100 and 150.
-        pool_tests::add_deep_price_point<SPAM, SUI, SUI, DEEP>(
+        pool_tests::add_deep_price_point<SPAM, IOTA, IOTA, DEEP>(
             OWNER,
             pool2_id,
             pool1_id,
@@ -1208,7 +1208,7 @@ module deepbook::master_tests {
         );
 
         // Check data added is 150
-        check_mid_price<SUI, DEEP>(
+        check_mid_price<IOTA, DEEP>(
             pool1_id,
             150 * constants::float_scaling(),
             &mut test
@@ -1216,7 +1216,7 @@ module deepbook::master_tests {
 
         // Cannot add deep price point again because it was added too recently
         if (error_code == EDataRecentlyAdded) {
-            pool_tests::add_deep_price_point<SPAM, SUI, SUI, DEEP>(
+            pool_tests::add_deep_price_point<SPAM, IOTA, IOTA, DEEP>(
                 OWNER,
                 pool2_id,
                 pool1_id,
@@ -1229,8 +1229,8 @@ module deepbook::master_tests {
         // Maker fee should be the default of 0.05%
         // Since deep per sui is 150 (based on orders placed in pool 1),
         // Alice should pay 0.05% * (quantity 1 * price 10 * conversion 150) = 0.75 DEEP
-        // Alice also pays 10 SUI for SPAM
-        let order_info = pool_tests::place_limit_order<SPAM, SUI>(
+        // Alice also pays 10 IOTA for SPAM
+        let order_info = pool_tests::place_limit_order<SPAM, IOTA>(
             ALICE,
             pool2_id,
             alice_balance_manager_id,
@@ -1257,7 +1257,7 @@ module deepbook::master_tests {
         );
 
         // Alice cancels the order, gets the exact same refund back
-        pool_tests::cancel_order<SPAM, SUI>(
+        pool_tests::cancel_order<SPAM, IOTA>(
             ALICE,
             pool2_id,
             alice_balance_manager_id,
@@ -1282,7 +1282,7 @@ module deepbook::master_tests {
         // Then Alice will take
         // Both alice and bob will pay 0.05% * (quantity 1 * price 10 * conversion 150) = 0.75 DEEP
         // for maker order and 0.10% * (quantity 1 * price 10 * conversion 150) = 0.75 DEEP for taker order
-        execute_cross_trading<SPAM, SUI>(
+        execute_cross_trading<SPAM, IOTA>(
             pool2_id,
             alice_balance_manager_id,
             bob_balance_manager_id,
@@ -1371,19 +1371,19 @@ module deepbook::master_tests {
             usdt: starting_balance,
         };
 
-        // Create the DEEP reference pool SUI/DEEP
-        let reference_pool_id = pool_tests::setup_reference_pool<SUI, DEEP>(OWNER, registry_id, owner_balance_manager_id, 100 * constants::float_scaling(), &mut test);
-        // Create the SUI/USDT pool
-        let pool_id = pool_tests::setup_pool_with_default_fees<SUI, USDT>(OWNER, registry_id, false, false, &mut test);
+        // Create the DEEP reference pool IOTA/DEEP
+        let reference_pool_id = pool_tests::setup_reference_pool<IOTA, DEEP>(OWNER, registry_id, owner_balance_manager_id, 100 * constants::float_scaling(), &mut test);
+        // Create the IOTA/USDT pool
+        let pool_id = pool_tests::setup_pool_with_default_fees<IOTA, USDT>(OWNER, registry_id, false, false, &mut test);
 
-        // Alice now has no DEEP and SUI after withdrawal and burn for testing
+        // Alice now has no DEEP and IOTA after withdrawal and burn for testing
         withdraw_and_burn<DEEP>(
             ALICE,
             alice_balance_manager_id,
             10000 * constants::float_scaling(),
             &mut test
         );
-        withdraw_and_burn<SUI>(
+        withdraw_and_burn<IOTA>(
             ALICE,
             alice_balance_manager_id,
             10000 * constants::float_scaling(),
@@ -1397,8 +1397,8 @@ module deepbook::master_tests {
             &mut test
         );
 
-        // Owner adds a price point of default 100 DEEP per SUI to the SUI/USDT pool
-        pool_tests::add_deep_price_point<SUI, USDT, SUI, DEEP>(
+        // Owner adds a price point of default 100 DEEP per IOTA to the IOTA/USDT pool
+        pool_tests::add_deep_price_point<IOTA, USDT, IOTA, DEEP>(
             OWNER,
             pool_id,
             reference_pool_id,
@@ -1408,9 +1408,9 @@ module deepbook::master_tests {
         let price = 100 * constants::float_scaling();
         let quantity = 10 * constants::float_scaling();
 
-        // Owner places a bid order of at price 100 for 10 SUI into pool 1, which is a SUI/DEEP pool
+        // Owner places a bid order of at price 100 for 10 IOTA into pool 1, which is a IOTA/DEEP pool
         // This allows for flash loans
-        pool_tests::place_limit_order<SUI, DEEP>(
+        pool_tests::place_limit_order<IOTA, DEEP>(
             OWNER,
             reference_pool_id,
             owner_balance_manager_id,
@@ -1425,11 +1425,11 @@ module deepbook::master_tests {
             &mut test,
         );
 
-        // Owner places a sell order in the SUI/USDC pool
+        // Owner places a sell order in the IOTA/USDC pool
         let price = 2 * constants::float_scaling();
         let quantity = 10 * constants::float_scaling();
 
-        pool_tests::place_limit_order<SUI, USDT>(
+        pool_tests::place_limit_order<IOTA, USDT>(
             OWNER,
             pool_id,
             owner_balance_manager_id,
@@ -1446,14 +1446,14 @@ module deepbook::master_tests {
 
         test.next_tx(ALICE);
         {
-            let mut loan_pool = test.take_shared_by_id<Pool<SUI, DEEP>>(reference_pool_id);
-            let mut target_pool = test.take_shared_by_id<Pool<SUI, USDT>>(pool_id);
+            let mut loan_pool = test.take_shared_by_id<Pool<IOTA, DEEP>>(reference_pool_id);
+            let mut target_pool = test.take_shared_by_id<Pool<IOTA, USDT>>(pool_id);
             let clock = test.take_shared<Clock>();
             let mut alice_balance_manager = test.take_shared_by_id<BalanceManager>(alice_balance_manager_id);
             let trade_proof = alice_balance_manager.generate_proof_as_owner(test.ctx());
 
-            // Alice wants to swap 10 USDT for 5 SUI in the SUI/USDT pool, but has no SUI to swap to DEEP
-            // Alice will borrow 100 DEEP from the SUI/DEEP pool
+            // Alice wants to swap 10 USDT for 5 IOTA in the IOTA/USDT pool, but has no IOTA to swap to DEEP
+            // Alice will borrow 100 DEEP from the IOTA/DEEP pool
             // If Alice tries to borrow too much from the pool, there will be an error
 
             let quote_needed = if (error_code == ENotEnoughQuoteForLoan) {
@@ -1463,7 +1463,7 @@ module deepbook::master_tests {
             };
             if (error_code == ENotEnoughBaseForLoan) {
                 let base_needed = 10000 * constants::float_scaling();
-                let (_base_borrowed, _flash_loan) = pool::borrow_flashloan_base<SUI, DEEP>(
+                let (_base_borrowed, _flash_loan) = pool::borrow_flashloan_base<IOTA, DEEP>(
                     &mut loan_pool,
                     base_needed,
                     test.ctx(),
@@ -1471,7 +1471,7 @@ module deepbook::master_tests {
                 abort 0
             };
 
-            let (quote_borrowed, flash_loan) = pool::borrow_flashloan_quote<SUI, DEEP>(
+            let (quote_borrowed, flash_loan) = pool::borrow_flashloan_quote<IOTA, DEEP>(
                 &mut loan_pool,
                 quote_needed,
                 test.ctx(),
@@ -1483,11 +1483,11 @@ module deepbook::master_tests {
             // Alice deposits the 100 DEEP into her balance_manager
             alice_balance_manager.deposit<DEEP>(quote_borrowed, test.ctx());
 
-            // Alice places a bid order of 5 SUI at price 2, pays fees in DEEP
+            // Alice places a bid order of 5 IOTA at price 2, pays fees in DEEP
             // This will match with owner's sell order
             let price = 2 * constants::float_scaling();
             let quantity = 5 * constants::float_scaling();
-            target_pool.place_limit_order<SUI, USDT>(
+            target_pool.place_limit_order<IOTA, USDT>(
                 &mut alice_balance_manager,
                 &trade_proof,
                 client_order_id,
@@ -1502,8 +1502,8 @@ module deepbook::master_tests {
                 test.ctx(),
             );
 
-            // Alice should now have 5 more SUI (originally at 0) and 10 less USDT
-            // Alice should traded 5 SUI, which is 500 in DEEP quantity,
+            // Alice should now have 5 more IOTA (originally at 0) and 10 less USDT
+            // Alice should traded 5 IOTA, which is 500 in DEEP quantity,
             // since taker fee is 0.10%, Alice should pay 0.10% * 500 = 0.5 DEEP
             alice_balance.sui = alice_balance.sui + quantity;
             alice_balance.usdt = alice_balance.usdt - math::mul(quantity, price);
@@ -1515,10 +1515,10 @@ module deepbook::master_tests {
             let quantity = 1 * constants::float_scaling();
             let price = 100 * constants::float_scaling();
 
-            // Alice needs to swap SUI back to DEEP in a deep pool, in this scenario also the loan pool
-            // to pay back the flash loan. She places a market order of 1 SUI for 100 DEEP.
+            // Alice needs to swap IOTA back to DEEP in a deep pool, in this scenario also the loan pool
+            // to pay back the flash loan. She places a market order of 1 IOTA for 100 DEEP.
             // Alice is matched with owner's price of 100 in reference pool
-            loan_pool.place_market_order<SUI, DEEP>(
+            loan_pool.place_market_order<IOTA, DEEP>(
                 &mut alice_balance_manager,
                 &trade_proof,
                 client_order_id,
@@ -1560,12 +1560,12 @@ module deepbook::master_tests {
         // No balance changes
         test.next_tx(ALICE);
         {
-            let mut loan_pool = test.take_shared_by_id<Pool<SUI, DEEP>>(reference_pool_id);
+            let mut loan_pool = test.take_shared_by_id<Pool<IOTA, DEEP>>(reference_pool_id);
             let clock = test.take_shared<Clock>();
             let mut alice_balance_manager = test.take_shared_by_id<BalanceManager>(alice_balance_manager_id);
 
             let base_needed = 1 * constants::float_scaling();
-            let (base_borrowed, flash_loan) = pool::borrow_flashloan_base<SUI, DEEP>(
+            let (base_borrowed, flash_loan) = pool::borrow_flashloan_base<IOTA, DEEP>(
                 &mut loan_pool,
                 base_needed,
                 test.ctx(),
@@ -1574,9 +1574,9 @@ module deepbook::master_tests {
 
             assert!(base_borrowed.value() == base_needed, 0);
 
-            alice_balance_manager.deposit<SUI>(base_borrowed, test.ctx());
+            alice_balance_manager.deposit<IOTA>(base_borrowed, test.ctx());
 
-            let base_return = alice_balance_manager.withdraw<SUI>(base_needed, test.ctx());
+            let base_return = alice_balance_manager.withdraw<IOTA>(base_needed, test.ctx());
             loan_pool.return_flashloan_base(base_return, flash_loan);
             alice_balance.deep = alice_balance.deep - base_needed;
 
@@ -1596,12 +1596,12 @@ module deepbook::master_tests {
         if (error_code == EIncorrectTypeReturned){
             test.next_tx(ALICE);
             {
-                let mut loan_pool = test.take_shared_by_id<Pool<SUI, DEEP>>(reference_pool_id);
+                let mut loan_pool = test.take_shared_by_id<Pool<IOTA, DEEP>>(reference_pool_id);
                 let clock = test.take_shared<Clock>();
                 let mut alice_balance_manager = test.take_shared_by_id<BalanceManager>(alice_balance_manager_id);
 
                 let base_needed = 1 * constants::float_scaling();
-                let (base_borrowed, flash_loan) = pool::borrow_flashloan_base<SUI, DEEP>(
+                let (base_borrowed, flash_loan) = pool::borrow_flashloan_base<IOTA, DEEP>(
                     &mut loan_pool,
                     base_needed,
                     test.ctx(),
@@ -1610,7 +1610,7 @@ module deepbook::master_tests {
 
                 assert!(base_borrowed.value() == base_needed, 0);
 
-                alice_balance_manager.deposit<SUI>(base_borrowed, test.ctx());
+                alice_balance_manager.deposit<IOTA>(base_borrowed, test.ctx());
 
                 let quote_return = alice_balance_manager.withdraw<DEEP>(base_needed, test.ctx());
                 loan_pool.return_flashloan_quote(quote_return, flash_loan);
@@ -1640,35 +1640,35 @@ module deepbook::master_tests {
             &mut test
         );
 
-        // Create two pools, one with SUI as base asset and one with SPAM as base asset
-        // Conversion is 100 DEEP per SUI, 95 DEEP per SPAM
+        // Create two pools, one with IOTA as base asset and one with SPAM as base asset
+        // Conversion is 100 DEEP per IOTA, 95 DEEP per SPAM
         let pool1_reference_id = if (deep_is_base) {
-            pool_tests::setup_reference_pool_deep_as_base<DEEP, SUI>(OWNER, registry_id, owner_balance_manager_id, 100 * constants::float_scaling(), &mut test)
+            pool_tests::setup_reference_pool_deep_as_base<DEEP, IOTA>(OWNER, registry_id, owner_balance_manager_id, 100 * constants::float_scaling(), &mut test)
         } else {
-            pool_tests::setup_reference_pool<SUI, DEEP>(OWNER, registry_id, owner_balance_manager_id, 100 * constants::float_scaling(), &mut test)
+            pool_tests::setup_reference_pool<IOTA, DEEP>(OWNER, registry_id, owner_balance_manager_id, 100 * constants::float_scaling(), &mut test)
         };
         let pool2_reference_id = pool_tests::setup_reference_pool<SPAM, DEEP>(OWNER, registry_id, owner_balance_manager_id, 95 * constants::float_scaling(), &mut test);
 
-        // Create two pools, one with SUI as base asset and one with SPAM as base asset
-        let pool1_id = pool_tests::setup_pool_with_default_fees<SUI, SPAM>(OWNER, registry_id, false, false, &mut test);
+        // Create two pools, one with IOTA as base asset and one with SPAM as base asset
+        let pool1_id = pool_tests::setup_pool_with_default_fees<IOTA, SPAM>(OWNER, registry_id, false, false, &mut test);
 
-        // Conversion is 100 DEEP per SUI, 95 DEEP per SPAM
+        // Conversion is 100 DEEP per IOTA, 95 DEEP per SPAM
         if (deep_is_base){
-            pool_tests::add_deep_price_point<SUI, SPAM, DEEP, SUI>(
+            pool_tests::add_deep_price_point<IOTA, SPAM, DEEP, IOTA>(
                 OWNER,
                 pool1_id,
                 pool1_reference_id,
                 &mut test,
             );
         } else {
-            pool_tests::add_deep_price_point<SUI, SPAM, SUI, DEEP>(
+            pool_tests::add_deep_price_point<IOTA, SPAM, IOTA, DEEP>(
                 OWNER,
                 pool1_id,
                 pool1_reference_id,
                 &mut test,
             );
         };
-        pool_tests::add_deep_price_point<SUI, SPAM, SPAM, DEEP>(
+        pool_tests::add_deep_price_point<IOTA, SPAM, SPAM, DEEP>(
             OWNER,
             pool1_id,
             pool2_reference_id,
@@ -1712,9 +1712,9 @@ module deepbook::master_tests {
         // Since both price points are available, SPAM (quote) conversion should be used
         // Alice and Bob execute cross trading in pool 1
         // Alice should have 12 less SPAM, Bob should have 12 more SPAM
-        // Alice should have 6 more SUI, Bob should have 6 less SUI
+        // Alice should have 6 more IOTA, Bob should have 6 less IOTA
         // DEEP fees will be calculated using the SPAM conversion of 95
-        execute_cross_trading<SUI, SPAM>(
+        execute_cross_trading<IOTA, SPAM>(
             pool1_id,
             alice_balance_manager_id,
             bob_balance_manager_id,
@@ -1780,24 +1780,24 @@ module deepbook::master_tests {
         );
 
         // Create pool and reference pool
-        let pool1_id = pool_tests::setup_pool_with_default_fees<SUI, USDC>(OWNER, registry_id, false, false, &mut test);
+        let pool1_id = pool_tests::setup_pool_with_default_fees<IOTA, USDC>(OWNER, registry_id, false, false, &mut test);
         let pool1_reference_id = if (error_code == NoErrorDeepAsBase) {
-            pool_tests::setup_reference_pool_deep_as_base<DEEP, SUI>(OWNER, registry_id, owner_balance_manager_id, 100 * constants::float_scaling(), &mut test)
+            pool_tests::setup_reference_pool_deep_as_base<DEEP, IOTA>(OWNER, registry_id, owner_balance_manager_id, 100 * constants::float_scaling(), &mut test)
         } else {
-            pool_tests::setup_reference_pool<SUI, DEEP>(OWNER, registry_id, owner_balance_manager_id, 100 * constants::float_scaling(), &mut test)
+            pool_tests::setup_reference_pool<IOTA, DEEP>(OWNER, registry_id, owner_balance_manager_id, 100 * constants::float_scaling(), &mut test)
 
         };
 
         // Default price point of 100 deep per base will be added
         if (error_code == NoErrorDeepAsBase) {
-            pool_tests::add_deep_price_point<SUI, USDC, DEEP, SUI>(
+            pool_tests::add_deep_price_point<IOTA, USDC, DEEP, IOTA>(
                 OWNER,
                 pool1_id,
                 pool1_reference_id,
                 &mut test,
             );
         } else {
-            pool_tests::add_deep_price_point<SUI, USDC, SUI, DEEP>(
+            pool_tests::add_deep_price_point<IOTA, USDC, IOTA, DEEP>(
                 OWNER,
                 pool1_id,
                 pool1_reference_id,
@@ -1830,8 +1830,8 @@ module deepbook::master_tests {
             usdt: starting_balance,
         };
 
-        // Bob places an order with quantity 10 in SUI/USDC pool at a price of 2 using Alice's balance manager
-        let order_info = pool_tests::place_limit_order<SUI, USDC>(
+        // Bob places an order with quantity 10 in IOTA/USDC pool at a price of 2 using Alice's balance manager
+        let order_info = pool_tests::place_limit_order<IOTA, USDC>(
             BOB,
             pool1_id,
             alice_balance_manager_id,
@@ -1859,7 +1859,7 @@ module deepbook::master_tests {
         let quantity = 5 * constants::float_scaling();
 
         // Owner places an ask order at the same price matches with 5 of Alice's order
-        pool_tests::place_limit_order<SUI, USDC>(
+        pool_tests::place_limit_order<IOTA, USDC>(
             OWNER,
             pool1_id,
             owner_balance_manager_id,
@@ -1881,7 +1881,7 @@ module deepbook::master_tests {
 
         // Bob modifies the order from original quantity of 10 to 8
         // Since quantity of 5 was filled, the effective quantity is 3
-        pool_tests::modify_order<SUI, USDC>(
+        pool_tests::modify_order<IOTA, USDC>(
             BOB,
             pool1_id,
             alice_balance_manager_id,
@@ -1901,7 +1901,7 @@ module deepbook::master_tests {
         );
 
         // Alice cancels the order herself, should get correct refund of remaining quantity
-        pool_tests::cancel_order<SUI, USDC>(
+        pool_tests::cancel_order<IOTA, USDC>(
             ALICE,
             pool1_id,
             alice_balance_manager_id,
@@ -1929,7 +1929,7 @@ module deepbook::master_tests {
 
         // Bob tries to place an order using Alice's balance manager, will error
         if (error_code == EInvalidTrader) {
-            pool_tests::place_limit_order<SUI, USDC>(
+            pool_tests::place_limit_order<IOTA, USDC>(
                 BOB,
                 pool1_id,
                 alice_balance_manager_id,
@@ -1949,7 +1949,7 @@ module deepbook::master_tests {
     }
 
     fun test_get_level_2_range() {
-        // There is a reference pool with SUI as base asset and DEEP as quote asset
+        // There is a reference pool with IOTA as base asset and DEEP as quote asset
         // We call get level 2 range for the reference pool, should return correct vectors
         let mut test = begin(OWNER);
         let registry_id = pool_tests::setup_test(OWNER, &mut test);
@@ -1961,14 +1961,14 @@ module deepbook::master_tests {
             starting_balance,
             &mut test
         );
-        let pool1_reference_id = pool_tests::setup_reference_pool<SUI, DEEP>(OWNER, registry_id, owner_balance_manager_id, 100 * constants::float_scaling(), &mut test);
+        let pool1_reference_id = pool_tests::setup_reference_pool<IOTA, DEEP>(OWNER, registry_id, owner_balance_manager_id, 100 * constants::float_scaling(), &mut test);
 
         // Currently there's a bid order at price 20 with quantity 1
         // OWNER places another bid order in the reference pool at price 20 and quantity 2
         let price = 20 * constants::float_scaling();
         let quantity = 2 * constants::float_scaling();
         let is_bid = true;
-        pool_tests::place_limit_order<SUI, DEEP>(
+        pool_tests::place_limit_order<IOTA, DEEP>(
             OWNER,
             pool1_reference_id,
             owner_balance_manager_id,
@@ -1987,7 +1987,7 @@ module deepbook::master_tests {
         let price = 30 * constants::float_scaling();
         let quantity = 5 * constants::float_scaling();
         let is_bid = true;
-        pool_tests::place_limit_order<SUI, DEEP>(
+        pool_tests::place_limit_order<IOTA, DEEP>(
             OWNER,
             pool1_reference_id,
             owner_balance_manager_id,
@@ -2003,7 +2003,7 @@ module deepbook::master_tests {
         );
 
         // OWNER places a bid that will be expired, has no effect on level 2 range
-        pool_tests::place_limit_order<SUI, DEEP>(
+        pool_tests::place_limit_order<IOTA, DEEP>(
             OWNER,
             pool1_reference_id,
             owner_balance_manager_id,
@@ -2022,7 +2022,7 @@ module deepbook::master_tests {
 
         // Get level 2 range for the reference pool, should return correct vectors
         let is_bid = true;
-        let (prices, quantities) = get_level2_range<SUI, DEEP>(
+        let (prices, quantities) = get_level2_range<IOTA, DEEP>(
             OWNER,
             pool1_reference_id,
             1,
@@ -2036,7 +2036,7 @@ module deepbook::master_tests {
         assert!(quantities[1] == 3 * constants::float_scaling(), EIncorrectLevel2Quantity);
 
         // Include price 20 but exclude price 30
-        let (prices, quantities) = get_level2_range<SUI, DEEP>(
+        let (prices, quantities) = get_level2_range<IOTA, DEEP>(
             OWNER,
             pool1_reference_id,
             1,
@@ -2048,7 +2048,7 @@ module deepbook::master_tests {
         assert!(quantities[0] == 3 * constants::float_scaling(), EIncorrectLevel2Quantity);
 
         // Exclude all prices
-        let (prices, quantities) = get_level2_range<SUI, DEEP>(
+        let (prices, quantities) = get_level2_range<IOTA, DEEP>(
             OWNER,
             pool1_reference_id,
             21 * constants::float_scaling(),
@@ -2064,7 +2064,7 @@ module deepbook::master_tests {
         let price = 180 * constants::float_scaling();
         let quantity = 2 * constants::float_scaling();
         let is_bid = false;
-        pool_tests::place_limit_order<SUI, DEEP>(
+        pool_tests::place_limit_order<IOTA, DEEP>(
             OWNER,
             pool1_reference_id,
             owner_balance_manager_id,
@@ -2080,7 +2080,7 @@ module deepbook::master_tests {
         );
 
         // OWNER places another ask order that will be expired
-        pool_tests::place_limit_order<SUI, DEEP>(
+        pool_tests::place_limit_order<IOTA, DEEP>(
             OWNER,
             pool1_reference_id,
             owner_balance_manager_id,
@@ -2101,7 +2101,7 @@ module deepbook::master_tests {
         let price = 170 * constants::float_scaling();
         let quantity = 5 * constants::float_scaling();
         let is_bid = false;
-        pool_tests::place_limit_order<SUI, DEEP>(
+        pool_tests::place_limit_order<IOTA, DEEP>(
             OWNER,
             pool1_reference_id,
             owner_balance_manager_id,
@@ -2118,7 +2118,7 @@ module deepbook::master_tests {
 
         // Get level 2 range for the reference pool, should return correct vectors
         let is_bid = false;
-        let (prices, quantities) = get_level2_range<SUI, DEEP>(
+        let (prices, quantities) = get_level2_range<IOTA, DEEP>(
             OWNER,
             pool1_reference_id,
             170 * constants::float_scaling(),
@@ -2133,7 +2133,7 @@ module deepbook::master_tests {
         assert!(quantities[1] == 3 * constants::float_scaling(), EIncorrectLevel2Quantity);
 
         // Include price 180 but exclude price 170
-        let (prices, quantities) = get_level2_range<SUI, DEEP>(
+        let (prices, quantities) = get_level2_range<IOTA, DEEP>(
             OWNER,
             pool1_reference_id,
             180 * constants::float_scaling(),
@@ -2145,7 +2145,7 @@ module deepbook::master_tests {
         assert!(quantities[0] == 3 * constants::float_scaling(), EIncorrectLevel2Quantity);
 
         // Include price 170 but exclude 180
-        let (prices, quantities) = get_level2_range<SUI, DEEP>(
+        let (prices, quantities) = get_level2_range<IOTA, DEEP>(
             OWNER,
             pool1_reference_id,
             170 * constants::float_scaling(),
@@ -2157,7 +2157,7 @@ module deepbook::master_tests {
         assert!(quantities[0] == 5 * constants::float_scaling(), EIncorrectLevel2Quantity);
 
         // Only the best bid of 30 and best ask of 170 should be returned
-        let (bid_prices, bid_quantities, ask_prices, ask_quantities) = get_level2_ticks_from_mid<SUI, DEEP>(
+        let (bid_prices, bid_quantities, ask_prices, ask_quantities) = get_level2_ticks_from_mid<IOTA, DEEP>(
             OWNER,
             pool1_reference_id,
             1,
@@ -2169,7 +2169,7 @@ module deepbook::master_tests {
         assert!(ask_quantities[0] == 5 * constants::float_scaling(), EIncorrectLevel2Quantity);
 
         // Both bids and asks (2 each) should be returned
-        let (bid_prices, bid_quantities, ask_prices, ask_quantities) = get_level2_ticks_from_mid<SUI, DEEP>(
+        let (bid_prices, bid_quantities, ask_prices, ask_quantities) = get_level2_ticks_from_mid<IOTA, DEEP>(
             OWNER,
             pool1_reference_id,
             2,
@@ -2185,7 +2185,7 @@ module deepbook::master_tests {
         assert!(ask_quantities[1] == 3 * constants::float_scaling(), EIncorrectLevel2Quantity);
 
         // Should only return 2 bids and 2 asks even though tick is higher
-        let (bid_prices, bid_quantities, ask_prices, ask_quantities) = get_level2_ticks_from_mid<SUI, DEEP>(
+        let (bid_prices, bid_quantities, ask_prices, ask_quantities) = get_level2_ticks_from_mid<IOTA, DEEP>(
             OWNER,
             pool1_reference_id,
             3,
@@ -2449,7 +2449,7 @@ module deepbook::master_tests {
         test.next_tx(OWNER);
         {
             let my_manager = test.take_shared_by_id<BalanceManager>(balance_manager_id);
-            let sui = balance_manager::balance<SUI>(&my_manager);
+            let sui = balance_manager::balance<IOTA>(&my_manager);
             let usdc = balance_manager::balance<USDC>(&my_manager);
             let spam = balance_manager::balance<SPAM>(&my_manager);
             let deep = balance_manager::balance<DEEP>(&my_manager);

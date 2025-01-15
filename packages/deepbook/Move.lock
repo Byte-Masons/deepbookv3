@@ -2,7 +2,7 @@
 
 [move]
 version = 2
-manifest_digest = "88A7A602F469CEBA15F4C397A213767006940E04D261580C6F4C952E3513F430"
+manifest_digest = "187ADCBC8067B5C0BDF3C620C8E76DE3D71F6AF06CA3B2B9E7C37D10333DDB05"
 deps_digest = "3C4103934B1E040BB6B23F1D610B4EF9F2F1166A50A104EADCF77467C004C600"
 dependencies = [
   { name = "Iota" },
@@ -19,11 +19,11 @@ dependencies = [
 
 [[move.package]]
 name = "MoveStdlib"
-source = { git = "https://github.com/iotaledger/iota.git", rev = "testnet", subdir = "crates\\iota-framework\\packages\\move-stdlib" }
+source = { git = "https://github.com/iotaledger/iota.git", rev = "testnet", subdir = "crates/iota-framework/packages/move-stdlib" }
 
 [[move.package]]
 name = "token"
-source = { local = "..\\token" }
+source = { local = "../token" }
 
 dependencies = [
   { name = "Iota" },
