@@ -11,6 +11,8 @@ import { Secp256k1Keypair } from '@iota/iota-sdk/keypairs/secp256k1';
 import { Secp256r1Keypair } from '@iota/iota-sdk/keypairs/secp256r1';
 import { Transaction } from '@iota/iota-sdk/transactions';
 import { fromB64, toB64 } from '@iota/iota-sdk/utils';
+import { DeepBookClient } from "deepbook-v3-iota";
+import { adminCapID } from "../config/constants";
 
 export type Network = 'mainnet' | 'testnet' | 'devnet' | 'localnet';
 
@@ -92,6 +94,35 @@ export const getSigner = () => {
 export const getClient = (network: Network) => {
 	const url = process.env.RPC_URL || getFullnodeUrl(network);
 	return new IotaClient({ url });
+};
+
+export const getDeepbookClient = () => {
+	// Update constant for env
+	const env = "testnet";
+	
+	// Initialize with balance managers if needed
+	const balanceManagers = {
+		MANAGER_1: {
+			address: "",
+			tradeCap: "",
+		},
+	};
+	
+	const iotaTestnetUrl = "https://api.testnet.iota.cafe";
+	const clientAddress = "0x69d0ed97ad0620655ed5877f397f28d561e09b97f27f876a846b680ea97e3efc";
+	
+	const dbClient = new DeepBookClient({
+		address: clientAddress,
+		env: env,
+		client: new IotaClient({
+			//url: getFullnodeUrl(env),
+			url: iotaTestnetUrl,
+		}),
+		balanceManagers: balanceManagers,
+		adminCap: adminCapID[env],
+	});
+
+	return dbClient;
 };
 
 /// Builds a transaction (unsigned) and saves it on `setup/tx/tx-data.txt` (on production)
