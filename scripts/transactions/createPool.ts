@@ -4,29 +4,12 @@ import { Transaction } from "@iota/iota-sdk/transactions";
 import { adminCapID } from "../config/constants";
 import { DeepBookClient } from "deepbook-v3-iota";
 import { IotaClient } from "@iota/iota-sdk/client";
-import { decodeIotaPrivateKey } from '@iota/iota-sdk/cryptography';
-import { Ed25519Keypair } from '@iota/iota-sdk/keypairs/ed25519';
 import type { Keypair } from '@iota/iota-sdk/cryptography';
-import dotenv from 'dotenv';
-dotenv.config();
-
-const getSignerFromPK = (privateKey: string) => {
-  const { schema, secretKey } = decodeIotaPrivateKey(privateKey);
-  if (schema === 'ED25519') return Ed25519Keypair.fromSecretKey(secretKey);
-
-  throw new Error(`Unsupported schema: ${schema}`);
-};
+import { getSigner } from '../utils/utils';
 
 (async () => {
   // Update constant for env
   const env = "testnet";
-
-  const privateKey = process.env.PRIVATE_KEY;
-  // console.log(process.env);
-	if (!privateKey) {
-		throw new Error('Private key not found');
-	}
-  console.log(privateKey);
 
   // Initialize with balance managers if needed
   const balanceManagers = {
@@ -62,7 +45,7 @@ const getSignerFromPK = (privateKey: string) => {
     stablePool: false,
   })(tx);
 
-  let resolvedKeypair: Keypair = getSignerFromPK(privateKey);
+  let resolvedKeypair: Keypair = getSigner();
 
   const response = await dbClient.client.signAndExecuteTransaction({
     transaction: tx,
