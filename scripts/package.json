@@ -12,7 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "@iota/iota-sdk": "^0.4.0",
-    "deepbook-v3-iota": "^0.0.0",
+    "deepbook-v3-iota": "^0.0.3",
     "dotenv": "^16.4.5",
     "ts-node": "^10.9.2",
     "tsx": "^4.19.2"
