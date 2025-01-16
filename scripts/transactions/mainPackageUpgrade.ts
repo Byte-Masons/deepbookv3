@@ -6,7 +6,7 @@ import { upgradeCapID } from '../config/constants';
 
 const network = 'mainnet';
 
-// Active env of sui has to be the same with the env we're publishing to.
+// Active env of iota has to be the same with the env we're publishing to.
 // if upgradeCap & gasObject is on mainnet, it has to be on mainnet.
 // Github actions are always on mainnet.
 const mainPackageUpgrade = async () => {
@@ -15,7 +15,7 @@ const mainPackageUpgrade = async () => {
     // Enabling the gas Object check only on mainnet, to allow testnet multisig tests.
     if (!gasObjectId) throw new Error('No gas object supplied for a mainnet transaction');
 
-    const upgradeCall = `sui client upgrade --upgrade-capability ${upgradeCapID[network]} --gas-budget 3000000000 --gas ${gasObjectId} --skip-dependency-verification --serialize-unsigned-transaction`;
+    const upgradeCall = `iota client upgrade --upgrade-capability ${upgradeCapID[network]} --gas-budget 3000000000 --gas ${gasObjectId} --skip-dependency-verification --serialize-unsigned-transaction`;
 
     try {
         // Execute the command with the specified working directory and capture the output

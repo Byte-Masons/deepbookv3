@@ -11,7 +11,7 @@ import type { BalanceManager } from 'deepbook-v3-iota';
 
 export class DeepBookMarketMaker extends DeepBookClient {
 	keypair: Keypair;
-	suiClient: IotaClient;
+	iotaClient: IotaClient;
 
 	constructor(
 		keypair: string | Keypair,
@@ -40,7 +40,7 @@ export class DeepBookMarketMaker extends DeepBookClient {
 		});
 
 		this.keypair = resolvedKeypair;
-		this.suiClient = new IotaClient({
+		this.iotaClient = new IotaClient({
 			url: getFullnodeUrl(env),
 		});
 	}
@@ -53,7 +53,7 @@ export class DeepBookMarketMaker extends DeepBookClient {
 	};
 
 	signAndExecute = async (tx: Transaction) => {
-		return this.suiClient.signAndExecuteTransaction({
+		return this.iotaClient.signAndExecuteTransaction({
 			transaction: tx,
 			signer: this.keypair,
 			options: {
@@ -68,18 +68,18 @@ export class DeepBookMarketMaker extends DeepBookClient {
 	}
 
 	// Example of a flash loan transaction
-	// Borrow 1 DEEP from DEEP_SUI pool
-	// Swap 0.5 DBUSDC for SUI in SUI_DBUSDC pool, pay with deep borrowed
-	// Swap SUI back to DEEP
-	// Return 1 DEEP to DEEP_SUI pool
+	// Borrow 1 DEEP from DEEP_IOTA pool
+	// Swap 0.5 DBUSDC for IOTA in IOTA_DBUSDC pool, pay with deep borrowed
+	// Swap IOTA back to DEEP
+	// Return 1 DEEP to DEEP_IOTA pool
 	flashLoanExample = async (tx: Transaction) => {
 		const borrowAmount = 1;
-		const [deepCoin, flashLoan] = tx.add(this.flashLoans.borrowBaseAsset('DEEP_SUI', borrowAmount));
+		const [deepCoin, flashLoan] = tx.add(this.flashLoans.borrowBaseAsset('DEEP_IOTA', borrowAmount));
 
 		// Execute trade using borrowed DEEP
 		const [baseOut, quoteOut, deepOut] = tx.add(
 			this.deepBook.swapExactQuoteForBase({
-				poolKey: 'SUI_DBUSDC',
+				poolKey: 'IOTA_DBUSDC',
 				amount: 0.5,
 				deepAmount: 1,
 				minOut: 0,
@@ -92,7 +92,7 @@ export class DeepBookMarketMaker extends DeepBookClient {
 		// Execute second trade to get back DEEP for repayment
 		const [baseOut2, quoteOut2, deepOut2] = tx.add(
 			this.deepBook.swapExactQuoteForBase({
-				poolKey: 'DEEP_SUI',
+				poolKey: 'DEEP_IOTA',
 				amount: 10,
 				deepAmount: 0,
 				minOut: 0,
@@ -103,7 +103,7 @@ export class DeepBookMarketMaker extends DeepBookClient {
 
 		// Return borrowed DEEP
 		const loanRemain = tx.add(
-			this.flashLoans.returnBaseAsset('DEEP_SUI', borrowAmount, baseOut2, flashLoan),
+			this.flashLoans.returnBaseAsset('DEEP_IOTA', borrowAmount, baseOut2, flashLoan),
 		);
 		tx.transferObjects([loanRemain], this.getActiveAddress());
 	};
@@ -111,7 +111,7 @@ export class DeepBookMarketMaker extends DeepBookClient {
 	placeLimitOrderExample = (tx: Transaction) => {
 		tx.add(
 			this.deepBook.placeLimitOrder({
-				poolKey: 'SUI_DBUSDC',
+				poolKey: 'IOTA_DBUSDC',
 				balanceManagerKey: 'MANAGER_1',
 				clientOrderId: '123456789',
 				price: 1,

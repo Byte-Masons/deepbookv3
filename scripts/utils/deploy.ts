@@ -8,7 +8,7 @@ const tx = new Transaction();
 const packagePath = '../../packages/token';
 
 // Optional: Path to custom config
-const configPath = './sui.config.js';
+const configPath = './iota.config.js';
 
 // Publish the package
 publishPackage(tx, packagePath);
