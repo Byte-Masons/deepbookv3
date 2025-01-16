@@ -16,7 +16,7 @@ use deepbook::pool_tests::{
     setup_pool_with_default_fees_and_reference_pool,
     place_limit_order
 };
-use iota::iota::SUI;
+use iota::iota::IOTA;
 use iota::test_scenario::{begin, end, return_shared};
 use iota::test_utils;
 use token::deep::DEEP;
@@ -34,9 +34,9 @@ fun test_place_orders_ok() {
         &mut test,
     );
     let pool_id = setup_pool_with_default_fees_and_reference_pool<
-        SUI,
+        IOTA,
         USDC,
-        SUI,
+        IOTA,
         DEEP,
     >(ALICE, registry_id, balance_manager_id_alice, &mut test);
     let mut client_order_id = 1;
@@ -48,7 +48,7 @@ fun test_place_orders_ok() {
     let pay_with_deep = true;
 
     while (client_order_id <= 10) {
-        place_limit_order<SUI, USDC>(
+        place_limit_order<IOTA, USDC>(
             ALICE,
             pool_id,
             balance_manager_id_alice,
@@ -66,7 +66,7 @@ fun test_place_orders_ok() {
     };
 
     test.next_tx(ALICE);
-    let pool = test.take_shared_by_id<Pool<SUI, USDC>>(pool_id);
+    let pool = test.take_shared_by_id<Pool<IOTA, USDC>>(pool_id);
     let orders = iter_orders(
         &pool,
         option::none(),
@@ -92,7 +92,7 @@ fun test_place_orders_ok() {
     let ask_price = 3 * constants::float_scaling();
     let ask_is_bid = false;
     while (client_order_id <= 20) {
-        place_limit_order<SUI, USDC>(
+        place_limit_order<IOTA, USDC>(
             ALICE,
             pool_id,
             balance_manager_id_alice,
@@ -110,7 +110,7 @@ fun test_place_orders_ok() {
     };
 
     test.next_tx(ALICE);
-    let pool = test.take_shared_by_id<Pool<SUI, USDC>>(pool_id);
+    let pool = test.take_shared_by_id<Pool<IOTA, USDC>>(pool_id);
     let orders = iter_orders(
         &pool,
         option::none(),
@@ -124,7 +124,7 @@ fun test_place_orders_ok() {
     return_shared(pool);
 
     expire_timestamp = 100000000;
-    place_limit_order<SUI, USDC>(
+    place_limit_order<IOTA, USDC>(
         ALICE,
         pool_id,
         balance_manager_id_alice,
@@ -140,7 +140,7 @@ fun test_place_orders_ok() {
     );
 
     test.next_tx(ALICE);
-    let pool = test.take_shared_by_id<Pool<SUI, USDC>>(pool_id);
+    let pool = test.take_shared_by_id<Pool<IOTA, USDC>>(pool_id);
     let orders = iter_orders(
         &pool,
         option::none(),

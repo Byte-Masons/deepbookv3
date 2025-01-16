@@ -6,7 +6,7 @@ module deepbook::balance_manager_tests;
 
 use deepbook::balance_manager::{Self, BalanceManager, TradeCap};
 use iota::coin::mint_for_testing;
-use iota::iota::SUI;
+use iota::iota::IOTA;
 use iota::test_scenario::{Scenario, begin, end};
 use token::deep::DEEP;
 
@@ -23,17 +23,17 @@ fun test_deposit_ok() {
         let mut balance_manager = balance_manager::new(test.ctx());
         assert!(balance_manager.owner() == alice, 0);
         balance_manager.deposit(
-            mint_for_testing<SUI>(100, test.ctx()),
+            mint_for_testing<IOTA>(100, test.ctx()),
             test.ctx(),
         );
-        let balance = balance_manager.balance<SUI>();
+        let balance = balance_manager.balance<IOTA>();
         assert!(balance == 100, 0);
 
         balance_manager.deposit(
-            mint_for_testing<SUI>(100, test.ctx()),
+            mint_for_testing<IOTA>(100, test.ctx()),
             test.ctx(),
         );
-        let balance = balance_manager.balance<SUI>();
+        let balance = balance_manager.balance<IOTA>();
         assert!(balance == 200, 0);
 
         transfer::public_share_object(balance_manager);
@@ -62,7 +62,7 @@ fun test_deposit_as_owner_e() {
             balance_manager_id,
         );
         balance_manager.deposit(
-            mint_for_testing<SUI>(100, test.ctx()),
+            mint_for_testing<IOTA>(100, test.ctx()),
             test.ctx(),
         );
     };
@@ -120,10 +120,10 @@ fun test_deposit_with_removed_trader_e() {
 
         balance_manager.deposit_with_proof(
             &trade_proof,
-            mint_for_testing<SUI>(100, test.ctx()).into_balance(),
+            mint_for_testing<IOTA>(100, test.ctx()).into_balance(),
         );
         transfer::public_transfer(trade_cap, bob);
-        let balance = balance_manager.balance<SUI>();
+        let balance = balance_manager.balance<IOTA>();
         assert!(balance == 100, 0);
 
         balance_manager.revoke_trade_cap(&trade_cap_id, test.ctx());
@@ -157,17 +157,17 @@ fun test_withdraw_ok() {
     {
         let mut balance_manager = balance_manager::new(test.ctx());
         balance_manager.deposit(
-            mint_for_testing<SUI>(100, test.ctx()),
+            mint_for_testing<IOTA>(100, test.ctx()),
             test.ctx(),
         );
-        let balance = balance_manager.balance<SUI>();
+        let balance = balance_manager.balance<IOTA>();
         assert!(balance == 100, 0);
 
-        let coin = balance_manager.withdraw<SUI>(
+        let coin = balance_manager.withdraw<IOTA>(
             50,
             test.ctx(),
         );
-        let balance = balance_manager.balance<SUI>();
+        let balance = balance_manager.balance<IOTA>();
         assert!(balance == 50, 0);
         coin.burn_for_testing();
 
@@ -185,14 +185,14 @@ fun test_withdraw_all_ok() {
     {
         let mut balance_manager = balance_manager::new(test.ctx());
         balance_manager.deposit(
-            mint_for_testing<SUI>(100, test.ctx()),
+            mint_for_testing<IOTA>(100, test.ctx()),
             test.ctx(),
         );
-        let balance = balance_manager.balance<SUI>();
+        let balance = balance_manager.balance<IOTA>();
         assert!(balance == 100, 0);
 
-        let coin = balance_manager.withdraw_all<SUI>(test.ctx());
-        let balance = balance_manager.balance<SUI>();
+        let coin = balance_manager.withdraw_all<IOTA>(test.ctx());
+        let balance = balance_manager.balance<IOTA>();
         assert!(balance == 0, 0);
         assert!(coin.burn_for_testing() == 100, 0);
 
@@ -215,13 +215,13 @@ fun test_withdraw_balance_too_low_e() {
     {
         let mut balance_manager = balance_manager::new(test.ctx());
         balance_manager.deposit(
-            mint_for_testing<SUI>(100, test.ctx()),
+            mint_for_testing<IOTA>(100, test.ctx()),
             test.ctx(),
         );
-        let balance = balance_manager.balance<SUI>();
+        let balance = balance_manager.balance<IOTA>();
         assert!(balance == 100, 0);
 
-        let _coin = balance_manager.withdraw<SUI>(
+        let _coin = balance_manager.withdraw<IOTA>(
             200,
             test.ctx(),
         );
@@ -249,7 +249,7 @@ public(package) fun create_acct_and_share_with_funds(
     test.next_tx(sender);
     {
         let mut balance_manager = balance_manager::new(test.ctx());
-        deposit_into_account<SUI>(&mut balance_manager, amount, test);
+        deposit_into_account<IOTA>(&mut balance_manager, amount, test);
         deposit_into_account<SPAM>(&mut balance_manager, amount, test);
         deposit_into_account<USDC>(&mut balance_manager, amount, test);
         deposit_into_account<DEEP>(&mut balance_manager, amount, test);

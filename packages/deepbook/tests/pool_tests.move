@@ -22,7 +22,7 @@ use deepbook::registry::{Self, Registry};
 use deepbook::utils;
 use iota::clock::{Self, Clock};
 use iota::coin::{Coin, mint_for_testing};
-use iota::iota::SUI;
+use iota::iota::IOTA;
 use iota::test_scenario::{Scenario, begin, end, return_shared};
 use iota::test_utils;
 use token::deep::DEEP;
@@ -832,9 +832,9 @@ fun test_using_unregistered_as_reference() {
         &mut test,
     );
     setup_pool_with_default_fees_and_reference_pool_unregistered<
-        SUI,
+        IOTA,
         USDC,
-        SUI,
+        IOTA,
         DEEP,
     >(ALICE, registry_id, balance_manager_id_alice, &mut test);
     end(test);
@@ -875,12 +875,12 @@ fun test_get_order() {
         &mut test,
     );
     let pool_id = setup_pool_with_default_fees_and_reference_pool<
-        SUI,
+        IOTA,
         USDC,
-        SUI,
+        IOTA,
         DEEP,
     >(ALICE, registry_id, balance_manager_id_alice, &mut test);
-    let order_info = place_limit_order<SUI, USDC>(
+    let order_info = place_limit_order<IOTA, USDC>(
         ALICE,
         pool_id,
         balance_manager_id_alice,
@@ -923,12 +923,12 @@ fun test_get_orders() {
         &mut test,
     );
     let pool_id = setup_pool_with_default_fees_and_reference_pool<
-        SUI,
+        IOTA,
         USDC,
-        SUI,
+        IOTA,
         DEEP,
     >(ALICE, registry_id, balance_manager_id_alice, &mut test);
-    let order_info_1 = place_limit_order<SUI, USDC>(
+    let order_info_1 = place_limit_order<IOTA, USDC>(
         ALICE,
         pool_id,
         balance_manager_id_alice,
@@ -942,7 +942,7 @@ fun test_get_orders() {
         constants::max_u64(),
         &mut test,
     );
-    let order_info_2 = place_limit_order<SUI, USDC>(
+    let order_info_2 = place_limit_order<IOTA, USDC>(
         ALICE,
         pool_id,
         balance_manager_id_alice,
@@ -986,7 +986,7 @@ fun test_get_orders() {
 fun get_order(pool_id: ID, order_id: u128, test: &mut Scenario): Order {
     test.next_tx(OWNER);
     {
-        let pool = test.take_shared_by_id<Pool<SUI, USDC>>(pool_id);
+        let pool = test.take_shared_by_id<Pool<IOTA, USDC>>(pool_id);
         let order = pool.get_order(order_id);
         return_shared(pool);
 
@@ -1001,7 +1001,7 @@ fun get_orders(
 ): vector<Order> {
     test.next_tx(OWNER);
     {
-        let pool = test.take_shared_by_id<Pool<SUI, USDC>>(pool_id);
+        let pool = test.take_shared_by_id<Pool<IOTA, USDC>>(pool_id);
         let orders = pool.get_orders(order_ids);
         return_shared(pool);
 
@@ -1012,7 +1012,7 @@ fun get_orders(
 fun test_create_pool(whitelisted_pool: bool, stable_pool: bool) {
     let mut test = begin(OWNER);
     let registry_id = setup_test(OWNER, &mut test);
-    setup_pool_with_default_fees<SUI, DEEP>(
+    setup_pool_with_default_fees<IOTA, DEEP>(
         OWNER,
         registry_id,
         whitelisted_pool,
@@ -1431,9 +1431,9 @@ fun test_place_order_edge_price(quantity: u64, price: u64) {
         &mut test,
     );
     let pool_id = setup_pool_with_default_fees_and_reference_pool<
-        SUI,
+        IOTA,
         USDC,
-        SUI,
+        IOTA,
         DEEP,
     >(ALICE, registry_id, balance_manager_id_alice, &mut test);
 
@@ -1441,7 +1441,7 @@ fun test_place_order_edge_price(quantity: u64, price: u64) {
     let expire_timestamp = constants::max_u64();
     let pay_with_deep = true;
 
-    place_limit_order<SUI, USDC>(
+    place_limit_order<IOTA, USDC>(
         ALICE,
         pool_id,
         balance_manager_id_alice,
@@ -1512,9 +1512,9 @@ fun test_queue_priority(is_bid: bool) {
         &mut test,
     );
     let pool_id = setup_pool_with_default_fees_and_reference_pool<
-        SUI,
+        IOTA,
         USDC,
-        SUI,
+        IOTA,
         DEEP,
     >(ALICE, registry_id, balance_manager_id_alice, &mut test);
 
@@ -1529,7 +1529,7 @@ fun test_queue_priority(is_bid: bool) {
     let expire_timestamp = constants::max_u64();
     let pay_with_deep = true;
 
-    let order_info_worse = place_limit_order<SUI, USDC>(
+    let order_info_worse = place_limit_order<IOTA, USDC>(
         ALICE,
         pool_id,
         balance_manager_id_alice,
@@ -1544,7 +1544,7 @@ fun test_queue_priority(is_bid: bool) {
         &mut test,
     );
 
-    place_limit_order<SUI, USDC>(
+    place_limit_order<IOTA, USDC>(
         ALICE,
         pool_id,
         balance_manager_id_alice,
@@ -1559,7 +1559,7 @@ fun test_queue_priority(is_bid: bool) {
         &mut test,
     );
 
-    let order_info_2 = place_limit_order<SUI, USDC>(
+    let order_info_2 = place_limit_order<IOTA, USDC>(
         ALICE,
         pool_id,
         balance_manager_id_alice,
@@ -1574,7 +1574,7 @@ fun test_queue_priority(is_bid: bool) {
         &mut test,
     );
 
-    let order_info_3 = place_limit_order<SUI, USDC>(
+    let order_info_3 = place_limit_order<IOTA, USDC>(
         ALICE,
         pool_id,
         balance_manager_id_alice,
@@ -1590,7 +1590,7 @@ fun test_queue_priority(is_bid: bool) {
     );
 
     // Alice places limit order at price 1 for matching
-    place_limit_order<SUI, USDC>(
+    place_limit_order<IOTA, USDC>(
         ALICE,
         pool_id,
         balance_manager_id_alice,
@@ -1605,7 +1605,7 @@ fun test_queue_priority(is_bid: bool) {
         &mut test,
     );
 
-    borrow_and_verify_book_order<SUI, USDC>(
+    borrow_and_verify_book_order<IOTA, USDC>(
         pool_id,
         order_info_2.order_id(),
         is_bid,
@@ -1619,7 +1619,7 @@ fun test_queue_priority(is_bid: bool) {
         &mut test,
     );
 
-    borrow_and_verify_book_order<SUI, USDC>(
+    borrow_and_verify_book_order<IOTA, USDC>(
         pool_id,
         order_info_3.order_id(),
         is_bid,
@@ -1633,7 +1633,7 @@ fun test_queue_priority(is_bid: bool) {
         &mut test,
     );
 
-    borrow_and_verify_book_order<SUI, USDC>(
+    borrow_and_verify_book_order<IOTA, USDC>(
         pool_id,
         order_info_worse.order_id(),
         is_bid,
@@ -1648,7 +1648,7 @@ fun test_queue_priority(is_bid: bool) {
     );
 
     // Alice places limit order at price 1 for matching
-    place_limit_order<SUI, USDC>(
+    place_limit_order<IOTA, USDC>(
         ALICE,
         pool_id,
         balance_manager_id_alice,
@@ -1663,7 +1663,7 @@ fun test_queue_priority(is_bid: bool) {
         &mut test,
     );
 
-    borrow_and_verify_book_order<SUI, USDC>(
+    borrow_and_verify_book_order<IOTA, USDC>(
         pool_id,
         order_info_3.order_id(),
         is_bid,
@@ -1677,7 +1677,7 @@ fun test_queue_priority(is_bid: bool) {
         &mut test,
     );
 
-    borrow_and_verify_book_order<SUI, USDC>(
+    borrow_and_verify_book_order<IOTA, USDC>(
         pool_id,
         order_info_worse.order_id(),
         is_bid,
@@ -1708,9 +1708,9 @@ fun test_modify_order(
         &mut test,
     );
     let pool_id = setup_pool_with_default_fees_and_reference_pool<
-        SUI,
+        IOTA,
         USDC,
-        SUI,
+        IOTA,
         DEEP,
     >(ALICE, registry_id, balance_manager_id_alice, &mut test);
 
@@ -1719,7 +1719,7 @@ fun test_modify_order(
     let expire_timestamp = constants::max_u64();
     let pay_with_deep = true;
 
-    let order_info = place_limit_order<SUI, USDC>(
+    let order_info = place_limit_order<IOTA, USDC>(
         ALICE,
         pool_id,
         balance_manager_id_alice,
@@ -1735,7 +1735,7 @@ fun test_modify_order(
     );
 
     if (filled_quantity > 0) {
-        place_limit_order<SUI, USDC>(
+        place_limit_order<IOTA, USDC>(
             ALICE,
             pool_id,
             balance_manager_id_alice,
@@ -1751,7 +1751,7 @@ fun test_modify_order(
         );
     };
 
-    modify_order<SUI, USDC>(
+    modify_order<IOTA, USDC>(
         ALICE,
         pool_id,
         balance_manager_id_alice,
@@ -1760,7 +1760,7 @@ fun test_modify_order(
         &mut test,
     );
 
-    borrow_and_verify_book_order<SUI, USDC>(
+    borrow_and_verify_book_order<IOTA, USDC>(
         pool_id,
         order_info.order_id(),
         is_bid,
@@ -1791,9 +1791,9 @@ fun test_order_limit(is_bid: bool) {
         &mut test,
     );
     let pool_id = setup_pool_with_default_fees_and_reference_pool<
-        SUI,
+        IOTA,
         USDC,
-        SUI,
+        IOTA,
         DEEP,
     >(ALICE, registry_id, balance_manager_id_alice, &mut test);
 
@@ -1805,7 +1805,7 @@ fun test_order_limit(is_bid: bool) {
     let mut num_orders = 150;
 
     while (num_orders > 100) {
-        place_limit_order<SUI, USDC>(
+        place_limit_order<IOTA, USDC>(
             ALICE,
             pool_id,
             balance_manager_id_alice,
@@ -1824,7 +1824,7 @@ fun test_order_limit(is_bid: bool) {
     };
 
     while (num_orders > 0) {
-        place_limit_order<SUI, USDC>(
+        place_limit_order<IOTA, USDC>(
             BOB,
             pool_id,
             balance_manager_id_bob,
@@ -1845,7 +1845,7 @@ fun test_order_limit(is_bid: bool) {
     let match_quantity = 1000 * constants::float_scaling();
 
     // Place first order, should only match with 200 of the orders.
-    let order_info = place_limit_order<SUI, USDC>(
+    let order_info = place_limit_order<IOTA, USDC>(
         ALICE,
         pool_id,
         balance_manager_id_alice,
@@ -1880,7 +1880,7 @@ fun test_order_limit(is_bid: bool) {
     );
 
     // Place second order, should match with 100 of the remaining orders.
-    let order_info = place_limit_order<SUI, USDC>(
+    let order_info = place_limit_order<IOTA, USDC>(
         ALICE,
         pool_id,
         balance_manager_id_alice,
@@ -1920,7 +1920,7 @@ fun test_order_limit(is_bid: bool) {
 fun test_get_pool_id_by_asset() {
     let mut test = begin(OWNER);
     let registry_id = setup_test(OWNER, &mut test);
-    let pool_id_1 = setup_pool_with_default_fees<SUI, USDC>(
+    let pool_id_1 = setup_pool_with_default_fees<IOTA, USDC>(
         OWNER,
         registry_id,
         false,
@@ -1934,7 +1934,7 @@ fun test_get_pool_id_by_asset() {
         false,
         &mut test,
     );
-    let pool_id_1_returned = get_pool_id_by_asset<SUI, USDC>(
+    let pool_id_1_returned = get_pool_id_by_asset<IOTA, USDC>(
         registry_id,
         &mut test,
     );
@@ -1967,7 +1967,7 @@ fun get_pool_id_by_asset<BaseAsset, QuoteAsset>(
 fun test_unregister_pool(unregister: bool) {
     let mut test = begin(OWNER);
     let registry_id = setup_test(OWNER, &mut test);
-    let pool_id = setup_pool_with_default_fees<SUI, USDC>(
+    let pool_id = setup_pool_with_default_fees<IOTA, USDC>(
         OWNER,
         registry_id,
         false,
@@ -1975,9 +1975,9 @@ fun test_unregister_pool(unregister: bool) {
         &mut test,
     );
     if (unregister) {
-        unregister_pool<SUI, USDC>(pool_id, registry_id, &mut test);
+        unregister_pool<IOTA, USDC>(pool_id, registry_id, &mut test);
     };
-    setup_pool_with_default_fees<SUI, USDC>(
+    setup_pool_with_default_fees<IOTA, USDC>(
         OWNER,
         registry_id,
         false,
@@ -2166,9 +2166,9 @@ fun test_swap_exact_not_fully_filled(
         &mut test,
     );
     let pool_id = setup_pool_with_default_fees_and_reference_pool<
-        SUI,
+        IOTA,
         USDC,
-        SUI,
+        IOTA,
         DEEP,
     >(ALICE, registry_id, balance_manager_id_alice, &mut test);
 
@@ -2185,7 +2185,7 @@ fun test_swap_exact_not_fully_filled(
     let pay_with_deep = true;
     let residual = constants::lot_size() - 1;
 
-    place_limit_order<SUI, USDC>(
+    place_limit_order<IOTA, USDC>(
         ALICE,
         pool_id,
         balance_manager_id_alice,
@@ -2201,7 +2201,7 @@ fun test_swap_exact_not_fully_filled(
     );
 
     if (partially_filled_maker) {
-        place_limit_order<SUI, USDC>(
+        place_limit_order<IOTA, USDC>(
             ALICE,
             pool_id,
             balance_manager_id_alice,
@@ -2217,7 +2217,7 @@ fun test_swap_exact_not_fully_filled(
         );
     };
 
-    place_limit_order<SUI, USDC>(
+    place_limit_order<IOTA, USDC>(
         ALICE,
         pool_id,
         balance_manager_id_alice,
@@ -2256,7 +2256,7 @@ fun test_swap_exact_not_fully_filled(
         2 * math::mul(constants::deep_multiplier(), constants::taker_fee()) +
         residual;
 
-    let (base, quote, deep_required) = get_quantity_out<SUI, USDC>(
+    let (base, quote, deep_required) = get_quantity_out<IOTA, USDC>(
         pool_id,
         base_in,
         quote_in,
@@ -2264,13 +2264,13 @@ fun test_swap_exact_not_fully_filled(
     );
 
     let (base_2, quote_2, deep_required_2) = if (is_bid) {
-        get_quote_quantity_out<SUI, USDC>(
+        get_quote_quantity_out<IOTA, USDC>(
             pool_id,
             base_in,
             &mut test,
         )
     } else {
-        get_base_quantity_out<SUI, USDC>(
+        get_base_quantity_out<IOTA, USDC>(
             pool_id,
             quote_in,
             &mut test,
@@ -2283,7 +2283,7 @@ fun test_swap_exact_not_fully_filled(
     };
 
     let (base_out, quote_out, deep_out) = if (is_bid) {
-        place_swap_exact_base_for_quote<SUI, USDC>(
+        place_swap_exact_base_for_quote<IOTA, USDC>(
             pool_id,
             BOB,
             base_in,
@@ -2292,7 +2292,7 @@ fun test_swap_exact_not_fully_filled(
             &mut test,
         )
     } else {
-        place_swap_exact_quote_for_base<SUI, USDC>(
+        place_swap_exact_quote_for_base<IOTA, USDC>(
             pool_id,
             BOB,
             quote_in,
@@ -2402,9 +2402,9 @@ fun test_mid_price() {
         &mut test,
     );
     let pool_id = setup_pool_with_default_fees_and_reference_pool<
-        SUI,
+        IOTA,
         USDC,
-        SUI,
+        IOTA,
         DEEP,
     >(ALICE, registry_id, balance_manager_id_alice, &mut test);
 
@@ -2421,7 +2421,7 @@ fun test_mid_price() {
     let pay_with_deep = true;
     let is_bid = true;
 
-    place_limit_order<SUI, USDC>(
+    place_limit_order<IOTA, USDC>(
         ALICE,
         pool_id,
         balance_manager_id_alice,
@@ -2436,7 +2436,7 @@ fun test_mid_price() {
         &mut test,
     );
 
-    place_limit_order<SUI, USDC>(
+    place_limit_order<IOTA, USDC>(
         ALICE,
         pool_id,
         balance_manager_id_alice,
@@ -2451,7 +2451,7 @@ fun test_mid_price() {
         &mut test,
     );
 
-    place_limit_order<SUI, USDC>(
+    place_limit_order<IOTA, USDC>(
         ALICE,
         pool_id,
         balance_manager_id_alice,
@@ -2466,7 +2466,7 @@ fun test_mid_price() {
         &mut test,
     );
 
-    place_limit_order<SUI, USDC>(
+    place_limit_order<IOTA, USDC>(
         ALICE,
         pool_id,
         balance_manager_id_alice,
@@ -2481,7 +2481,7 @@ fun test_mid_price() {
         &mut test,
     );
 
-    place_limit_order<SUI, USDC>(
+    place_limit_order<IOTA, USDC>(
         ALICE,
         pool_id,
         balance_manager_id_alice,
@@ -2496,7 +2496,7 @@ fun test_mid_price() {
         &mut test,
     );
 
-    place_limit_order<SUI, USDC>(
+    place_limit_order<IOTA, USDC>(
         ALICE,
         pool_id,
         balance_manager_id_alice,
@@ -2513,14 +2513,14 @@ fun test_mid_price() {
 
     let expected_mid_price = (price_bid_expired + price_ask_expired) / 2;
     assert!(
-        get_mid_price<SUI, USDC>(pool_id, &mut test) == expected_mid_price,
+        get_mid_price<IOTA, USDC>(pool_id, &mut test) == expected_mid_price,
         constants::e_incorrect_mid_price(),
     );
 
     set_time(200, &mut test);
     let expected_mid_price = (price_bid_best + price_ask_best) / 2;
     assert!(
-        get_mid_price<SUI, USDC>(pool_id, &mut test) == expected_mid_price,
+        get_mid_price<IOTA, USDC>(pool_id, &mut test) == expected_mid_price,
         constants::e_incorrect_mid_price(),
     );
 
@@ -2542,9 +2542,9 @@ fun test_market_order(is_bid: bool) {
         &mut test,
     );
     let pool_id = setup_pool_with_default_fees_and_reference_pool<
-        SUI,
+        IOTA,
         USDC,
-        SUI,
+        IOTA,
         DEEP,
     >(ALICE, registry_id, balance_manager_id_alice, &mut test);
 
@@ -2565,7 +2565,7 @@ fun test_market_order(is_bid: bool) {
     let mut full_order_id = 0;
 
     while (i < num_orders) {
-        let order_info = place_limit_order<SUI, USDC>(
+        let order_info = place_limit_order<IOTA, USDC>(
             ALICE,
             pool_id,
             balance_manager_id_alice,
@@ -2597,7 +2597,7 @@ fun test_market_order(is_bid: bool) {
         constants::max_price()
     };
 
-    let order_info = place_market_order<SUI, USDC>(
+    let order_info = place_market_order<IOTA, USDC>(
         ALICE,
         pool_id,
         balance_manager_id_alice,
@@ -2635,7 +2635,7 @@ fun test_market_order(is_bid: bool) {
         current_time,
     );
 
-    borrow_and_verify_book_order<SUI, USDC>(
+    borrow_and_verify_book_order<IOTA, USDC>(
         pool_id,
         partial_order_id,
         is_bid,
@@ -2649,7 +2649,7 @@ fun test_market_order(is_bid: bool) {
         &mut test,
     );
 
-    borrow_and_verify_book_order<SUI, USDC>(
+    borrow_and_verify_book_order<IOTA, USDC>(
         pool_id,
         full_order_id,
         is_bid,
@@ -2679,9 +2679,9 @@ fun test_crossing_multiple(is_bid: bool, num_orders: u64) {
         &mut test,
     );
     let pool_id = setup_pool_with_default_fees_and_reference_pool<
-        SUI,
+        IOTA,
         USDC,
-        SUI,
+        IOTA,
         DEEP,
     >(ALICE, registry_id, balance_manager_id_alice, &mut test);
 
@@ -2693,7 +2693,7 @@ fun test_crossing_multiple(is_bid: bool, num_orders: u64) {
 
     let mut i = 0;
     while (i < num_orders) {
-        place_limit_order<SUI, USDC>(
+        place_limit_order<IOTA, USDC>(
             ALICE,
             pool_id,
             balance_manager_id_alice,
@@ -2717,7 +2717,7 @@ fun test_crossing_multiple(is_bid: bool, num_orders: u64) {
         3 * constants::float_scaling()
     };
 
-    let order_info = place_limit_order<SUI, USDC>(
+    let order_info = place_limit_order<IOTA, USDC>(
         ALICE,
         pool_id,
         balance_manager_id_alice,
@@ -2765,9 +2765,9 @@ fun test_fill_or_kill(is_bid: bool, order_can_be_filled: bool) {
         &mut test,
     );
     let pool_id = setup_pool_with_default_fees_and_reference_pool<
-        SUI,
+        IOTA,
         USDC,
-        SUI,
+        IOTA,
         DEEP,
     >(ALICE, registry_id, balance_manager_id_alice, &mut test);
 
@@ -2784,7 +2784,7 @@ fun test_fill_or_kill(is_bid: bool, order_can_be_filled: bool) {
     };
 
     while (num_orders > 0) {
-        place_limit_order<SUI, USDC>(
+        place_limit_order<IOTA, USDC>(
             ALICE,
             pool_id,
             balance_manager_id_alice,
@@ -2809,7 +2809,7 @@ fun test_fill_or_kill(is_bid: bool, order_can_be_filled: bool) {
         3 * constants::float_scaling()
     };
 
-    let order_info = place_limit_order<SUI, USDC>(
+    let order_info = place_limit_order<IOTA, USDC>(
         ALICE,
         pool_id,
         balance_manager_id_alice,
@@ -2852,9 +2852,9 @@ fun test_post_only(is_bid: bool, crosses_order: bool) {
         &mut test,
     );
     let pool_id = setup_pool_with_default_fees_and_reference_pool<
-        SUI,
+        IOTA,
         USDC,
-        SUI,
+        IOTA,
         DEEP,
     >(ALICE, registry_id, balance_manager_id_alice, &mut test);
 
@@ -2865,7 +2865,7 @@ fun test_post_only(is_bid: bool, crosses_order: bool) {
     let expire_timestamp = constants::max_u64();
     let pay_with_deep = true;
 
-    place_limit_order<SUI, USDC>(
+    place_limit_order<IOTA, USDC>(
         ALICE,
         pool_id,
         balance_manager_id_alice,
@@ -2888,7 +2888,7 @@ fun test_post_only(is_bid: bool, crosses_order: bool) {
         3 * constants::float_scaling()
     };
 
-    place_limit_order<SUI, USDC>(
+    place_limit_order<IOTA, USDC>(
         ALICE,
         pool_id,
         balance_manager_id_alice,
@@ -2922,9 +2922,9 @@ fun place_order_max_restrictions_e() {
         &mut test,
     );
     let pool_id = setup_pool_with_default_fees_and_reference_pool<
-        SUI,
+        IOTA,
         USDC,
-        SUI,
+        IOTA,
         DEEP,
     >(ALICE, registry_id, balance_manager_id_alice, &mut test);
     let client_order_id = 1;
@@ -2934,7 +2934,7 @@ fun place_order_max_restrictions_e() {
     let expire_timestamp = constants::max_u64();
     let pay_with_deep = true;
 
-    place_limit_order<SUI, USDC>(
+    place_limit_order<IOTA, USDC>(
         ALICE,
         pool_id,
         balance_manager_id_alice,
@@ -2962,9 +2962,9 @@ fun place_and_cancel_order_empty_e() {
         &mut test,
     );
     let pool_id = setup_pool_with_default_fees_and_reference_pool<
-        SUI,
+        IOTA,
         USDC,
-        SUI,
+        IOTA,
         DEEP,
     >(ALICE, registry_id, balance_manager_id_alice, &mut test);
 
@@ -2976,7 +2976,7 @@ fun place_and_cancel_order_empty_e() {
     let is_bid = true;
     let pay_with_deep = true;
 
-    let placed_order_id = place_limit_order<SUI, USDC>(
+    let placed_order_id = place_limit_order<IOTA, USDC>(
         ALICE,
         pool_id,
         balance_manager_id_alice,
@@ -2990,14 +2990,14 @@ fun place_and_cancel_order_empty_e() {
         expire_timestamp,
         &mut test,
     ).order_id();
-    cancel_order<SUI, USDC>(
+    cancel_order<IOTA, USDC>(
         ALICE,
         pool_id,
         balance_manager_id_alice,
         placed_order_id,
         &mut test,
     );
-    cancel_order<SUI, USDC>(
+    cancel_order<IOTA, USDC>(
         ALICE,
         pool_id,
         balance_manager_id_alice,
@@ -3023,9 +3023,9 @@ fun place_order_expired_order_skipped() {
         &mut test,
     );
     let pool_id = setup_pool_with_default_fees_and_reference_pool<
-        SUI,
+        IOTA,
         USDC,
-        SUI,
+        IOTA,
         DEEP,
     >(ALICE, registry_id, balance_manager_id_alice, &mut test);
     set_time(100, &mut test);
@@ -3038,7 +3038,7 @@ fun place_order_expired_order_skipped() {
     let is_bid = true;
     let pay_with_deep = true;
 
-    place_limit_order<SUI, USDC>(
+    place_limit_order<IOTA, USDC>(
         ALICE,
         pool_id,
         balance_manager_id_alice,
@@ -3064,9 +3064,9 @@ fun test_cancel_all_orders(is_bid: bool, has_open_orders: bool) {
         &mut test,
     );
     let pool_id = setup_pool_with_default_fees_and_reference_pool<
-        SUI,
+        IOTA,
         USDC,
-        SUI,
+        IOTA,
         DEEP,
     >(ALICE, registry_id, balance_manager_id_alice, &mut test);
 
@@ -3080,7 +3080,7 @@ fun test_cancel_all_orders(is_bid: bool, has_open_orders: bool) {
 
     if (has_open_orders) {
         order_info_1_id =
-            place_limit_order<SUI, USDC>(
+            place_limit_order<IOTA, USDC>(
                 ALICE,
                 pool_id,
                 balance_manager_id_alice,
@@ -3097,7 +3097,7 @@ fun test_cancel_all_orders(is_bid: bool, has_open_orders: bool) {
 
         let client_order_id = 2;
 
-        let order_info_2_id = place_limit_order<SUI, USDC>(
+        let order_info_2_id = place_limit_order<IOTA, USDC>(
             ALICE,
             pool_id,
             balance_manager_id_alice,
@@ -3112,20 +3112,20 @@ fun test_cancel_all_orders(is_bid: bool, has_open_orders: bool) {
             &mut test,
         ).order_id();
 
-        borrow_order_ok<SUI, USDC>(
+        borrow_order_ok<IOTA, USDC>(
             pool_id,
             order_info_1_id,
             &mut test,
         );
 
-        borrow_order_ok<SUI, USDC>(
+        borrow_order_ok<IOTA, USDC>(
             pool_id,
             order_info_2_id,
             &mut test,
         );
     };
 
-    cancel_all_orders<SUI, USDC>(
+    cancel_all_orders<IOTA, USDC>(
         pool_id,
         ALICE,
         balance_manager_id_alice,
@@ -3133,7 +3133,7 @@ fun test_cancel_all_orders(is_bid: bool, has_open_orders: bool) {
     );
 
     if (has_open_orders) {
-        borrow_order_ok<SUI, USDC>(
+        borrow_order_ok<IOTA, USDC>(
             pool_id,
             order_info_1_id,
             &mut test,
@@ -3154,9 +3154,9 @@ fun test_swap_exact_amount(is_bid: bool) {
         &mut test,
     );
     let pool_id = setup_pool_with_default_fees_and_reference_pool<
-        SUI,
+        IOTA,
         USDC,
-        SUI,
+        IOTA,
         DEEP,
     >(ALICE, registry_id, balance_manager_id_alice, &mut test);
 
@@ -3173,7 +3173,7 @@ fun test_swap_exact_amount(is_bid: bool) {
     let pay_with_deep = true;
     let residual = constants::lot_size() - 1;
 
-    place_limit_order<SUI, USDC>(
+    place_limit_order<IOTA, USDC>(
         ALICE,
         pool_id,
         balance_manager_id_alice,
@@ -3188,7 +3188,7 @@ fun test_swap_exact_amount(is_bid: bool) {
         &mut test,
     );
 
-    place_limit_order<SUI, USDC>(
+    place_limit_order<IOTA, USDC>(
         ALICE,
         pool_id,
         balance_manager_id_alice,
@@ -3219,7 +3219,7 @@ fun test_swap_exact_amount(is_bid: bool) {
         math::mul(constants::deep_multiplier(), constants::taker_fee()) +
         residual;
 
-    let (base, quote, deep_required) = get_quantity_out<SUI, USDC>(
+    let (base, quote, deep_required) = get_quantity_out<IOTA, USDC>(
         pool_id,
         base_in,
         quote_in,
@@ -3227,13 +3227,13 @@ fun test_swap_exact_amount(is_bid: bool) {
     );
 
     let (base_2, quote_2, deep_required_2) = if (is_bid) {
-        get_quote_quantity_out<SUI, USDC>(
+        get_quote_quantity_out<IOTA, USDC>(
             pool_id,
             base_in,
             &mut test,
         )
     } else {
-        get_base_quantity_out<SUI, USDC>(
+        get_base_quantity_out<IOTA, USDC>(
             pool_id,
             quote_in,
             &mut test,
@@ -3241,7 +3241,7 @@ fun test_swap_exact_amount(is_bid: bool) {
     };
 
     let (base_out, quote_out, deep_out) = if (is_bid) {
-        place_swap_exact_base_for_quote<SUI, USDC>(
+        place_swap_exact_base_for_quote<IOTA, USDC>(
             pool_id,
             BOB,
             base_in,
@@ -3250,7 +3250,7 @@ fun test_swap_exact_amount(is_bid: bool) {
             &mut test,
         )
     } else {
-        place_swap_exact_quote_for_base<SUI, USDC>(
+        place_swap_exact_quote_for_base<IOTA, USDC>(
             pool_id,
             BOB,
             quote_in,
@@ -3315,9 +3315,9 @@ fun test_self_matching_cancel_taker(is_bid: bool) {
         &mut test,
     );
     let pool_id = setup_pool_with_default_fees_and_reference_pool<
-        SUI,
+        IOTA,
         USDC,
-        SUI,
+        IOTA,
         DEEP,
     >(ALICE, registry_id, balance_manager_id_alice, &mut test);
 
@@ -3335,7 +3335,7 @@ fun test_self_matching_cancel_taker(is_bid: bool) {
     let pay_with_deep = true;
     let fee_is_deep = true;
 
-    let order_info_1 = place_limit_order<SUI, USDC>(
+    let order_info_1 = place_limit_order<IOTA, USDC>(
         ALICE,
         pool_id,
         balance_manager_id_alice,
@@ -3363,7 +3363,7 @@ fun test_self_matching_cancel_taker(is_bid: bool) {
         expire_timestamp,
     );
 
-    place_limit_order<SUI, USDC>(
+    place_limit_order<IOTA, USDC>(
         ALICE,
         pool_id,
         balance_manager_id_alice,
@@ -3394,9 +3394,9 @@ fun test_self_matching_cancel_maker(is_bid: bool) {
         &mut test,
     );
     let pool_id = setup_pool_with_default_fees_and_reference_pool<
-        SUI,
+        IOTA,
         USDC,
-        SUI,
+        IOTA,
         DEEP,
     >(ALICE, registry_id, balance_manager_id_alice, &mut test);
 
@@ -3414,7 +3414,7 @@ fun test_self_matching_cancel_maker(is_bid: bool) {
     let pay_with_deep = true;
     let fee_is_deep = true;
 
-    let order_info_1 = place_limit_order<SUI, USDC>(
+    let order_info_1 = place_limit_order<IOTA, USDC>(
         ALICE,
         pool_id,
         balance_manager_id_alice,
@@ -3442,7 +3442,7 @@ fun test_self_matching_cancel_maker(is_bid: bool) {
         expire_timestamp,
     );
 
-    let order_info_2 = place_limit_order<SUI, USDC>(
+    let order_info_2 = place_limit_order<IOTA, USDC>(
         ALICE,
         pool_id,
         balance_manager_id_alice,
@@ -3470,7 +3470,7 @@ fun test_self_matching_cancel_maker(is_bid: bool) {
         expire_timestamp,
     );
 
-    borrow_order_ok<SUI, USDC>(
+    borrow_order_ok<IOTA, USDC>(
         pool_id,
         order_info_1.order_id(),
         &mut test,
@@ -3488,9 +3488,9 @@ fun place_with_price_quantity(price: u64, quantity: u64) {
         &mut test,
     );
     let pool_id = setup_pool_with_default_fees_and_reference_pool<
-        SUI,
+        IOTA,
         USDC,
-        SUI,
+        IOTA,
         DEEP,
     >(ALICE, registry_id, balance_manager_id_alice, &mut test);
 
@@ -3499,7 +3499,7 @@ fun place_with_price_quantity(price: u64, quantity: u64) {
     let expire_timestamp = constants::max_u64();
     let pay_with_deep = true;
 
-    place_limit_order<SUI, USDC>(
+    place_limit_order<IOTA, USDC>(
         ALICE,
         pool_id,
         balance_manager_id_alice,
@@ -3525,9 +3525,9 @@ fun partially_filled_order_taken(is_bid: bool) {
         &mut test,
     );
     let pool_id = setup_pool_with_default_fees_and_reference_pool<
-        SUI,
+        IOTA,
         USDC,
-        SUI,
+        IOTA,
         DEEP,
     >(ALICE, registry_id, balance_manager_id_alice, &mut test);
     let balance_manager_id_bob = create_acct_and_share_with_funds(
@@ -3549,7 +3549,7 @@ fun partially_filled_order_taken(is_bid: bool) {
     let pay_with_deep = true;
 
     // Alice places an initial order with quantity 2
-    place_limit_order<SUI, USDC>(
+    place_limit_order<IOTA, USDC>(
         ALICE,
         pool_id,
         balance_manager_id_alice,
@@ -3566,7 +3566,7 @@ fun partially_filled_order_taken(is_bid: bool) {
 
     // Alice places a crossing order of quantity 10, 2 is filled and 8 is placed
     // on book
-    let alice_order_info_2 = place_limit_order<SUI, USDC>(
+    let alice_order_info_2 = place_limit_order<IOTA, USDC>(
         ALICE,
         pool_id,
         balance_manager_id_alice,
@@ -3603,7 +3603,7 @@ fun partially_filled_order_taken(is_bid: bool) {
 
     // Bob places another crossing order of quantity 10, 8 is filled and 2 is
     // placed on book
-    let bob_order_info = place_limit_order<SUI, USDC>(
+    let bob_order_info = place_limit_order<IOTA, USDC>(
         BOB,
         pool_id,
         balance_manager_id_bob,
@@ -3655,9 +3655,9 @@ fun partial_fill_order(
         &mut test,
     );
     let pool_id = setup_pool_with_default_fees_and_reference_pool<
-        SUI,
+        IOTA,
         USDC,
-        SUI,
+        IOTA,
         DEEP,
     >(ALICE, registry_id, balance_manager_id_alice, &mut test);
     let balance_manager_id_bob = create_acct_and_share_with_funds(
@@ -3671,7 +3671,7 @@ fun partial_fill_order(
     let expire_timestamp = constants::max_u64();
     let pay_with_deep = true;
 
-    place_limit_order<SUI, USDC>(
+    place_limit_order<IOTA, USDC>(
         ALICE,
         pool_id,
         balance_manager_id_alice,
@@ -3690,7 +3690,7 @@ fun partial_fill_order(
     let bob_price = 2 * constants::float_scaling();
     let bob_quantity = 2 * alice_quantity;
 
-    let bob_order_info = place_limit_order<SUI, USDC>(
+    let bob_order_info = place_limit_order<IOTA, USDC>(
         BOB,
         pool_id,
         balance_manager_id_bob,
@@ -3720,7 +3720,7 @@ fun partial_fill_order(
         expire_timestamp,
     );
 
-    borrow_order_ok<SUI, USDC>(
+    borrow_order_ok<IOTA, USDC>(
         pool_id,
         bob_order_info.order_id(),
         &mut test,
@@ -3746,9 +3746,9 @@ fun partial_fill_maker_order(
         &mut test,
     );
     let pool_id = setup_pool_with_default_fees_and_reference_pool<
-        SUI,
+        IOTA,
         USDC,
-        SUI,
+        IOTA,
         DEEP,
     >(ALICE, registry_id, balance_manager_id_alice, &mut test);
     let balance_manager_id_bob = create_acct_and_share_with_funds(
@@ -3762,7 +3762,7 @@ fun partial_fill_maker_order(
     let expire_timestamp = constants::max_u64();
     let pay_with_deep = true;
 
-    place_limit_order<SUI, USDC>(
+    place_limit_order<IOTA, USDC>(
         ALICE,
         pool_id,
         balance_manager_id_alice,
@@ -3778,7 +3778,7 @@ fun partial_fill_maker_order(
     );
 
     // Half of Alice's maker order is filled
-    place_limit_order<SUI, USDC>(
+    place_limit_order<IOTA, USDC>(
         ALICE,
         pool_id,
         balance_manager_id_alice,
@@ -3797,7 +3797,7 @@ fun partial_fill_maker_order(
     let bob_price = 2 * constants::float_scaling();
     let bob_quantity = 2 * alice_quantity;
 
-    let bob_order_info = place_limit_order<SUI, USDC>(
+    let bob_order_info = place_limit_order<IOTA, USDC>(
         BOB,
         pool_id,
         balance_manager_id_bob,
@@ -3827,7 +3827,7 @@ fun partial_fill_maker_order(
         expire_timestamp,
     );
 
-    borrow_order_ok<SUI, USDC>(
+    borrow_order_ok<IOTA, USDC>(
         pool_id,
         bob_order_info.order_id(),
         &mut test,
@@ -3857,16 +3857,16 @@ fun place_then_fill(
     );
     let pool_id = if (is_stable) {
         setup_pool_with_stable_fees_and_reference_pool<
-            SUI,
+            IOTA,
             USDC,
-            SUI,
+            IOTA,
             DEEP,
         >(ALICE, registry_id, balance_manager_id_alice, &mut test)
     } else {
         setup_pool_with_default_fees_and_reference_pool<
-            SUI,
+            IOTA,
             USDC,
-            SUI,
+            IOTA,
             DEEP,
         >(ALICE, registry_id, balance_manager_id_alice, &mut test)
     };
@@ -3881,7 +3881,7 @@ fun place_then_fill(
     let expire_timestamp = constants::max_u64();
     let pay_with_deep = true;
 
-    place_limit_order<SUI, USDC>(
+    place_limit_order<IOTA, USDC>(
         ALICE,
         pool_id,
         balance_manager_id_alice,
@@ -3904,7 +3904,7 @@ fun place_then_fill(
     };
     let bob_quantity = alice_quantity;
 
-    let bob_order_info = place_limit_order<SUI, USDC>(
+    let bob_order_info = place_limit_order<IOTA, USDC>(
         BOB,
         pool_id,
         balance_manager_id_bob,
@@ -3948,9 +3948,9 @@ fun place_then_fill_correct(is_bid: bool, order_type: u8, alice_quantity: u64) {
         &mut test,
     );
     let pool_id = setup_pool_with_default_fees_and_reference_pool<
-        SUI,
+        IOTA,
         USDC,
-        SUI,
+        IOTA,
         DEEP,
     >(ALICE, registry_id, balance_manager_id_alice, &mut test);
     let balance_manager_id_bob = create_acct_and_share_with_funds(
@@ -3964,7 +3964,7 @@ fun place_then_fill_correct(is_bid: bool, order_type: u8, alice_quantity: u64) {
     let expire_timestamp = constants::max_u64();
     let pay_with_deep = true;
 
-    place_limit_order<SUI, USDC>(
+    place_limit_order<IOTA, USDC>(
         ALICE,
         pool_id,
         balance_manager_id_alice,
@@ -3979,7 +3979,7 @@ fun place_then_fill_correct(is_bid: bool, order_type: u8, alice_quantity: u64) {
         &mut test,
     );
 
-    place_limit_order<SUI, USDC>(
+    place_limit_order<IOTA, USDC>(
         ALICE,
         pool_id,
         balance_manager_id_alice,
@@ -4002,7 +4002,7 @@ fun place_then_fill_correct(is_bid: bool, order_type: u8, alice_quantity: u64) {
     };
     let bob_quantity = alice_quantity * 2;
 
-    let mut bob_order_info = place_limit_order<SUI, USDC>(
+    let mut bob_order_info = place_limit_order<IOTA, USDC>(
         BOB,
         pool_id,
         balance_manager_id_bob,
@@ -4070,9 +4070,9 @@ fun place_then_no_fill(
         &mut test,
     );
     let pool_id = setup_pool_with_default_fees_and_reference_pool<
-        SUI,
+        IOTA,
         USDC,
-        SUI,
+        IOTA,
         DEEP,
     >(ALICE, registry_id, balance_manager_id_alice, &mut test);
     let balance_manager_id_bob = create_acct_and_share_with_funds(
@@ -4087,7 +4087,7 @@ fun place_then_no_fill(
     let expire_timestamp = constants::max_u64();
     let pay_with_deep = true;
 
-    place_limit_order<SUI, USDC>(
+    place_limit_order<IOTA, USDC>(
         ALICE,
         pool_id,
         balance_manager_id_alice,
@@ -4109,7 +4109,7 @@ fun place_then_no_fill(
         1 * constants::float_scaling()
     };
 
-    let order_info = place_limit_order<SUI, USDC>(
+    let order_info = place_limit_order<IOTA, USDC>(
         BOB,
         pool_id,
         balance_manager_id_bob,
@@ -4141,7 +4141,7 @@ fun place_then_no_fill(
         expire_timestamp,
     );
 
-    cancel_order<SUI, USDC>(
+    cancel_order<IOTA, USDC>(
         BOB,
         pool_id,
         balance_manager_id_bob,
@@ -4170,9 +4170,9 @@ fun place_order_expire_timestamp_e(
         &mut test,
     );
     let pool_id = setup_pool_with_default_fees_and_reference_pool<
-        SUI,
+        IOTA,
         USDC,
-        SUI,
+        IOTA,
         DEEP,
     >(ALICE, registry_id, balance_manager_id_alice, &mut test);
     let balance_manager_id_bob = create_acct_and_share_with_funds(
@@ -4188,7 +4188,7 @@ fun place_order_expire_timestamp_e(
     let fee_is_deep = true;
     let expire_timestamp = get_time(&mut test) + 100;
 
-    let order_info_alice = place_limit_order<SUI, USDC>(
+    let order_info_alice = place_limit_order<IOTA, USDC>(
         ALICE,
         pool_id,
         balance_manager_id_alice,
@@ -4225,7 +4225,7 @@ fun place_order_expire_timestamp_e(
     };
     let expire_timestamp = constants::max_u64();
 
-    let order_info_bob = place_limit_order<SUI, USDC>(
+    let order_info_bob = place_limit_order<IOTA, USDC>(
         BOB,
         pool_id,
         balance_manager_id_bob,
@@ -4256,7 +4256,7 @@ fun place_order_expire_timestamp_e(
         expire_timestamp,
     );
 
-    borrow_and_verify_book_order<SUI, USDC>(
+    borrow_and_verify_book_order<IOTA, USDC>(
         pool_id,
         order_info_bob.order_id(),
         !is_bid,
@@ -4270,7 +4270,7 @@ fun place_order_expire_timestamp_e(
         &mut test,
     );
 
-    borrow_order_ok<SUI, USDC>(
+    borrow_order_ok<IOTA, USDC>(
         pool_id,
         order_info_alice.order_id(),
         &mut test,
@@ -4288,13 +4288,13 @@ fun place_order_ok(is_bid: bool) {
         &mut test,
     );
     let pool_id = setup_pool_with_default_fees_and_reference_pool<
-        SUI,
+        IOTA,
         USDC,
-        SUI,
+        IOTA,
         DEEP,
     >(ALICE, registry_id, balance_manager_id_alice, &mut test);
 
-    validate_open_orders<SUI, USDC>(
+    validate_open_orders<IOTA, USDC>(
         ALICE,
         pool_id,
         balance_manager_id_alice,
@@ -4317,7 +4317,7 @@ fun place_order_ok(is_bid: bool) {
     let pay_with_deep = true;
 
     let order_info =
-        &place_limit_order<SUI, USDC>(
+        &place_limit_order<IOTA, USDC>(
             ALICE,
             pool_id,
             balance_manager_id_alice,
@@ -4345,7 +4345,7 @@ fun place_order_ok(is_bid: bool) {
         expire_timestamp,
     );
 
-    borrow_and_verify_book_order<SUI, USDC>(
+    borrow_and_verify_book_order<IOTA, USDC>(
         pool_id,
         order_info.order_id(),
         is_bid,
@@ -4358,7 +4358,7 @@ fun place_order_ok(is_bid: bool) {
         expire_timestamp,
         &mut test,
     );
-    validate_open_orders<SUI, USDC>(
+    validate_open_orders<IOTA, USDC>(
         ALICE,
         pool_id,
         balance_manager_id_alice,
@@ -4378,9 +4378,9 @@ fun place_and_cancel_order_ok(is_bid: bool) {
         &mut test,
     );
     let pool_id = setup_pool_with_default_fees_and_reference_pool<
-        SUI,
+        IOTA,
         USDC,
-        SUI,
+        IOTA,
         DEEP,
     >(ALICE, registry_id, balance_manager_id_alice, &mut test);
 
@@ -4397,7 +4397,7 @@ fun place_and_cancel_order_ok(is_bid: bool) {
     let fee_is_deep = true;
     let status = constants::live();
 
-    let order_info = place_limit_order<SUI, USDC>(
+    let order_info = place_limit_order<IOTA, USDC>(
         ALICE,
         pool_id,
         balance_manager_id_alice,
@@ -4425,7 +4425,7 @@ fun place_and_cancel_order_ok(is_bid: bool) {
         expire_timestamp,
     );
 
-    cancel_order<SUI, USDC>(
+    cancel_order<IOTA, USDC>(
         ALICE,
         pool_id,
         balance_manager_id_alice,
@@ -4863,9 +4863,9 @@ fun test_cancel_orders(is_bid: bool) {
         &mut test,
     );
     let pool_id = setup_pool_with_default_fees_and_reference_pool<
-        SUI,
+        IOTA,
         USDC,
-        SUI,
+        IOTA,
         DEEP,
     >(ALICE, registry_id, balance_manager_id_alice, &mut test);
 
@@ -4875,7 +4875,7 @@ fun test_cancel_orders(is_bid: bool) {
     let expire_timestamp = constants::max_u64();
     let pay_with_deep = true;
 
-    let order_info_1 = place_limit_order<SUI, USDC>(
+    let order_info_1 = place_limit_order<IOTA, USDC>(
         ALICE,
         pool_id,
         balance_manager_id_alice,
@@ -4890,7 +4890,7 @@ fun test_cancel_orders(is_bid: bool) {
         &mut test,
     );
 
-    let order_info_2 = place_limit_order<SUI, USDC>(
+    let order_info_2 = place_limit_order<IOTA, USDC>(
         ALICE,
         pool_id,
         balance_manager_id_alice,
@@ -4909,7 +4909,7 @@ fun test_cancel_orders(is_bid: bool) {
     orders_to_cancel.push_back(order_info_1.order_id());
     orders_to_cancel.push_back(order_info_2.order_id());
 
-    cancel_orders<SUI, USDC>(
+    cancel_orders<IOTA, USDC>(
         ALICE,
         pool_id,
         balance_manager_id_alice,
@@ -4917,7 +4917,7 @@ fun test_cancel_orders(is_bid: bool) {
         &mut test,
     );
 
-    borrow_and_verify_book_order<SUI, USDC>(
+    borrow_and_verify_book_order<IOTA, USDC>(
         pool_id,
         order_info_1.order_id(),
         is_bid,
@@ -4942,7 +4942,7 @@ fun test_update_pool_book_params(error: u8) {
         1000000 * constants::float_scaling(),
         &mut test,
     );
-    let pool_id = setup_pool_with_default_fees<SUI, USDC>(
+    let pool_id = setup_pool_with_default_fees<IOTA, USDC>(
         OWNER,
         registry_id,
         true,
@@ -4957,7 +4957,7 @@ fun test_update_pool_book_params(error: u8) {
     let expire_timestamp = constants::max_u64();
     let pay_with_deep = true;
 
-    place_limit_order<SUI, USDC>(
+    place_limit_order<IOTA, USDC>(
         ALICE,
         pool_id,
         balance_manager_id_alice,
@@ -4973,7 +4973,7 @@ fun test_update_pool_book_params(error: u8) {
     );
 
     if (error == 3) {
-        adjust_tick_size_admin<SUI, USDC>(
+        adjust_tick_size_admin<IOTA, USDC>(
             OWNER,
             pool_id,
             50,
@@ -4982,7 +4982,7 @@ fun test_update_pool_book_params(error: u8) {
     };
 
     if (error == 0) {
-        adjust_min_lot_size_admin<SUI, USDC>(
+        adjust_min_lot_size_admin<IOTA, USDC>(
             OWNER,
             pool_id,
             100,
@@ -4992,7 +4992,7 @@ fun test_update_pool_book_params(error: u8) {
     };
 
     if (error == 2) {
-        adjust_min_lot_size_admin<SUI, USDC>(
+        adjust_min_lot_size_admin<IOTA, USDC>(
             OWNER,
             pool_id,
             600,
@@ -5001,7 +5001,7 @@ fun test_update_pool_book_params(error: u8) {
         );
     };
 
-    place_limit_order<SUI, USDC>(
+    place_limit_order<IOTA, USDC>(
         ALICE,
         pool_id,
         balance_manager_id_alice,
@@ -5015,13 +5015,13 @@ fun test_update_pool_book_params(error: u8) {
         expire_timestamp,
         &mut test,
     );
-    adjust_tick_size_admin<SUI, USDC>(
+    adjust_tick_size_admin<IOTA, USDC>(
         OWNER,
         pool_id,
         100,
         &mut test,
     );
-    place_limit_order<SUI, USDC>(
+    place_limit_order<IOTA, USDC>(
         ALICE,
         pool_id,
         balance_manager_id_alice,

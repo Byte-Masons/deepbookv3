@@ -96,7 +96,7 @@ fun process_create_ok() {
     assert!(alice.total_volume() == 2_001_001_000, 0);
     assert!(alice.open_orders().size() == 1, 0);
     assert!(alice.open_orders().contains(&order_info3.order_id()), 0);
-    // she traded BOB for 2.001001 SUI
+    // she traded BOB for 2.001001 IOTA
     assert_eq(alice.settled_balances(), balances::new(2_001_001_000, 0, 0));
     assert_eq(alice.owed_balances(), balances::new(0, 0, 0));
 
@@ -179,7 +179,7 @@ fun process_create_expired_ok() {
     assert_eq(settled, balances::new(0, 0, 0));
     assert_eq(owed, balances::new(5 * constants::sui_unit(), 0, 2_500_000));
 
-    // maker had 5 SUI filled, 5 SUI expired
+    // maker had 5 IOTA filled, 5 IOTA expired
     let (settled, owed) = state.withdraw_settled_amounts(
         id_from_address(ALICE),
     );
@@ -198,7 +198,7 @@ fun process_create_expired_ok() {
 }
 
 #[test]
-// BOB sells 10 SUI at $1 with deep_per_base of 21
+// BOB sells 10 IOTA at $1 with deep_per_base of 21
 // gets matched with ALICE who has 13 buys at $13
 fun process_create_deep_price_ok() {
     let mut test = begin(OWNER);
@@ -371,7 +371,7 @@ fun process_create_after_raising_steak_req_ok() {
     taker_order.match_maker(&mut order, 0);
     let (settled, owed) = state.process_create(&mut taker_order, test.ctx());
     // bob's first order
-    // pays 1 SUI for the trade along with 0.001 DEEP in fees to receive 1 USDC
+    // pays 1 IOTA for the trade along with 0.001 DEEP in fees to receive 1 USDC
     assert_eq(settled, balances::new(0, 100 * constants::usdc_unit(), 0));
     assert_eq(owed, balances::new(100 * constants::sui_unit(), 0, 100_000_000));
 
@@ -492,7 +492,7 @@ fun process_create_after_lowering_steak_req_ok() {
     taker_order.match_maker(&mut order, 0);
     let (settled, owed) = state.process_create(&mut taker_order, test.ctx());
     // bob's first order
-    // pays 1 SUI for the trade along with 0.001 DEEP in fees to receive 1 USDC
+    // pays 1 IOTA for the trade along with 0.001 DEEP in fees to receive 1 USDC
     assert_eq(settled, balances::new(0, 50 * constants::usdc_unit(), 0));
     assert_eq(owed, balances::new(50 * constants::sui_unit(), 0, 50_000_000));
 
@@ -654,8 +654,8 @@ fun process_cancel_after_partial_ok() {
         id_from_address(ALICE),
         test.ctx(),
     );
-    // paid 100 USDC to buy 10 SUI. 1 SUI filled.
-    // returns 90 USDC and 1 SUI, along with 4_500_000 in DEEP
+    // paid 100 USDC to buy 10 IOTA. 1 IOTA filled.
+    // returns 90 USDC and 1 IOTA, along with 4_500_000 in DEEP
     assert_eq(
         settled,
         balances::new(

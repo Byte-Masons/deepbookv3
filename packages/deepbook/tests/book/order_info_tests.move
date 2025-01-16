@@ -43,7 +43,7 @@ fun calculate_partial_fill_balances_ok() {
     assert_eq(
         owed,
         balances::new(0, 1 * constants::usdc_unit(), 500_000),
-    ); // 5 bps of 1 SUI paid in DEEP
+    ); // 5 bps of 1 IOTA paid in DEEP
 
     end(test);
 }
@@ -74,7 +74,7 @@ fun calculate_partial_fill_balances_precision_ok() {
     assert_eq(
         owed,
         balances::new(0, 12_340_000, 5_000_000),
-    ); // 5 bps of 10 SUI paid in DEEP
+    ); // 5 bps of 10 IOTA paid in DEEP
 
     end(test);
 }
@@ -334,10 +334,10 @@ fun calculate_partial_fill_balances_bid_partial_fill_ok() {
         constants::maker_fee(),
     );
 
-    // 100 SUI filled, the taker is owed 100 SUI.
+    // 100 IOTA filled, the taker is owed 100 IOTA.
     assert_eq(settled, balances::new(100_000_000_000, 0, 0));
-    // Taker paid 181305 USDC for 100 SUI, so they owe 181305 USDC.
-    // The remaining 31.11 SUI is placed as a maker order at $1900
+    // Taker paid 181305 USDC for 100 IOTA, so they owe 181305 USDC.
+    // The remaining 31.11 IOTA is placed as a maker order at $1900
     // Additional owed to create maker order 31.11 * 1900 = 59109 USDC.
     // Total USDC owed = 181305 + 59109 = 240414
 
@@ -385,10 +385,10 @@ fun calculate_partial_fill_balances_ask_partial_fill_ok() {
         constants::maker_fee(),
     );
 
-    // Sell of 0.001 SUI filled at $70,000, taker is owed 70 USDC
+    // Sell of 0.001 IOTA filled at $70,000, taker is owed 70 USDC
     assert_eq(settled, balances::new(0, 70_000_000, 0));
-    // Taker paid 70 USDC for 0.001 SUI, so they owe 70 USDC.
-    // The remaining 0.004 SUI is placed as a maker order at $68,191.55
+    // Taker paid 70 USDC for 0.001 IOTA, so they owe 70 USDC.
+    // The remaining 0.004 IOTA is placed as a maker order at $68,191.55
 
     // Taker fee = 0.001 * 0.001 = 0.000001 DEEP
     // Maker fee = 0.0005 * 0.004 = 0.000002 DEEP
