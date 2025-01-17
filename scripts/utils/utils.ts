@@ -13,6 +13,7 @@ import { Transaction } from '@iota/iota-sdk/transactions';
 import { fromB64, toB64 } from '@iota/iota-sdk/utils';
 import { DeepBookClient } from "deepbook-v3-iota";
 import { adminCapID } from "../config/constants";
+import { getFaucetHost, requestIotaFromFaucetV1 } from "@iota/iota-sdk/faucet";
 
 export type Network = 'mainnet' | 'testnet' | 'devnet' | 'localnet';
 
@@ -162,6 +163,21 @@ export const prepareMultisigTx = async (
 			process.env.NODE_ENV === 'development' ? './tx/tx-data-local.txt' : './tx/tx-data.txt';
 
 		fs.writeFileSync(output_location, serializedBase64);
+	});
+};
+
+export const hasGas = async (network: Network) => {
+	const client = getClient(network);
+	const balance = await client.getBalance({ owner: getActiveAddress() });
+	return balance > 0;
+};
+
+export const requestGasFromFaucet = async (network: Network) => {
+	await requestIotaFromFaucetV1({
+		// use getFaucetHost to make sure you're using correct faucet address
+		// you can also just use the address (see IOTA TypeScript SDK Quick Start for values)
+		host: getFaucetHost(network),
+		recipient: getActiveAddress(),
 	});
 };
 
