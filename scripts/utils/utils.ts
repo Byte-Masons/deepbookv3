@@ -30,6 +30,7 @@ export const publishPackage = (txb: Transaction, path: string, configPath?: stri
 		...(configPath ? ['--client.config', configPath] : []),
 		'build',
 		'--dump-bytecode-as-base64',
+		'--with-unpublished-dependencies',
 		'--path',
 		path,
 	];
@@ -99,7 +100,8 @@ export const getClient = (network: Network) => {
 
 export const getDeepbookClient = () => {
 	// Update constant for env
-	const env = "testnet";
+	const env = "localnet";
+	// const env = "testnet";
 	
 	// Initialize with balance managers if needed
 	const balanceManagers = {
@@ -109,15 +111,16 @@ export const getDeepbookClient = () => {
 		},
 	};
 	
-	const iotaTestnetUrl = "https://api.testnet.iota.cafe";
-	const clientAddress = "0x69d0ed97ad0620655ed5877f397f28d561e09b97f27f876a846b680ea97e3efc";
+	// const iotaTestnetUrl = "https://api.testnet.iota.cafe";
+	// const clientAddress = "0x69d0ed97ad0620655ed5877f397f28d561e09b97f27f876a846b680ea97e3efc";
 	
 	const dbClient = new DeepBookClient({
-		address: clientAddress,
+		// address: clientAddress,
+		address: getActiveAddress(),
 		env: env,
 		client: new IotaClient({
-			//url: getFullnodeUrl(env),
-			url: iotaTestnetUrl,
+			url: getFullnodeUrl(env),
+			// url: iotaTestnetUrl,
 		}),
 		balanceManagers: balanceManagers,
 		adminCap: adminCapID[env],
