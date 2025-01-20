@@ -172,7 +172,7 @@ export const prepareMultisigTx = async (
 export const hasGas = async (network: Network) => {
 	const client = getClient(network);
 	const balance = await client.getBalance({ owner: getActiveAddress() });
-	return balance > 0;
+	return Number(balance.totalBalance) > 0;
 };
 
 export const requestGasFromFaucet = async (network: Network) => {
